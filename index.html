@@ -1,29 +1,21 @@
 <!DOCTYPE html>
 <html lang="en">
-	<head>
-		<meta charset="UTF-8">
-		<title>Project</title>
-	</head>
-	<body>
 
-		<h1>res.sendFile() gets index!</h1>
-		<input id="get 1" type="button" value="get first">
-		<input id="get 2" type="button" value="get second">
-		<h2>info 1</h2>
-		<div id="info 1"></div>
-		<h2>info 2</h2>
-		<div id="info 2"></div>
+<head>
+	<meta charset="UTF-8">
+	<title>Project</title>
+</head>
 
-		<script type="text/javascript">
-document.getElementById("get 1").onclick = function() {
-	fetch('q1')
-		.then(response => response.json())
-		.then(data => document.getElementById("info 1").innerHTML += data.detectorid + ' ' + data.starttime + ' ' + data.dqflags);}
-document.getElementById("get 2").onclick = function() {
-	fetch('q2')
-		.then(response => response.json())
-		.then(data => document.getElementById("info 2").innerHTML += data.detectorid + ' ' + data.starttime + ' ' + data.dqflags);}
+<body>
 
-</script>	
+	<input id="get 1" type="button" value="get first">
+	<input id="get 2" type="button" value="get second">
+	<h2>info 1</h2>
+	<div id="info 1"></div>
+	<h2>info 2</h2>
+	<div id="info 2"></div>
+
+	<script src="app.js"></script>
 </body>
+
 </html>
