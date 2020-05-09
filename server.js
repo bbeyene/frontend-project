@@ -5,6 +5,8 @@ const config = require("./config");
 var express = require("express");
 var app = express();
 var path = require("path");
+var cors = require("cors");
+app.use(cors());
 
 app.get('/q1', function (req, res) {
   const client = new cassandra.Client({
