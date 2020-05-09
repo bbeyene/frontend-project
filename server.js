@@ -16,10 +16,10 @@ app.get('/q1', function (req, res) {
       username: config.cassandra.username,
       password: config.cassandra.password,
     },
-    keyspace: "part_1",
+    keyspace: "part_2_testing",
   });
 
-  const query = "SELECT * FROM loopdata_one_hour";
+  const query = "SELECT * FROM freeway_loopdata_OneHour where detectorid = 1345";
   client.execute(query).then((result) => res.send(result.rows[1]));
 });
 
@@ -31,11 +31,16 @@ app.get('/q2', function (req, res) {
       username: config.cassandra.username,
       password: config.cassandra.password,
     },
-    keyspace: "part_1",
+    keyspace: "part_2_testing",
   });
 
-  const query = "SELECT * FROM loopdata_one_hour";
-  client.execute(query).then((result) => res.send(result.rows[5]));
+  const query = "SELECT * FROM freeway_loopdata_OneHour where detectorid = 1346";
+  client.execute(query).then((result) => res.send(result.rows[1]));
+});
+
+app.get('/q3', function (req, res) {
+
+  res.sendFile(path.join(__dirname + "/freeway_loopdata_OneHour.json"));
 });
 
 app.get("/", function (req, res) {
