@@ -18,21 +18,21 @@
 		<script type="text/javascript">
 
 // on development
-// let todaysHost = 'ip:port/';
-// const proxyurl = "https://cors-anywhere.herokuapp.com/";
+// let todaysHost = 'ip:port';
+// let todaysHost = '';
+//const proxyurl = "https://cors-anywhere.herokuapp.com/";
 // stackoverflow.com/questions/43871637/no-access-control-allow-origin-header-is-present-on-the-requested-resource-whe
 
 // on deploy
 // fetch('q1')
 // on development
-//fetch(`${proxyurl}${todaysHost}q1`)
-// on deploy
-// fetch('q2')
-// on development
-//fetch(`${proxyurl}${todaysHost}q2`)
+// fetch(`${proxyurl}/${todaysHost}/q1`)
+// or if cors used ...
+// fetch(`${todaysHost}/q1`)
 
 document.getElementById("get 1").onclick = function() {
 	fetch('q1')
+//fetch(`${todaysHost}/q1`)
 		.then(response => response.json())
 		.then(data => document.getElementById("info 1").innerHTML += data.detectorid + ' ' + data.starttime + ' ' + data.dqflags);}
 document.getElementById("get 2").onclick = function() {
