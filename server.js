@@ -6,7 +6,7 @@ var express = require("express");
 var app = express();
 var path = require("path");
 
-app.get("/q1", function (req, res) {
+app.get('/q1', function (req, res) {
   const client = new cassandra.Client({
     contactPoints: config.cassandra.hosts,
     localDataCenter: config.cassandra.datacenter,
@@ -21,7 +21,7 @@ app.get("/q1", function (req, res) {
   client.execute(query).then((result) => res.send(result.rows[1]));
 });
 
-app.get("/q2", function (req, res) {
+app.get('/q2', function (req, res) {
   const client = new cassandra.Client({
     contactPoints: config.cassandra.hosts,
     localDataCenter: config.cassandra.datacenter,

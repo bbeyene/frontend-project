@@ -1,21 +1,46 @@
 <!DOCTYPE html>
 <html lang="en">
 
-<head>
-	<meta charset="UTF-8">
-	<title>Project</title>
-</head>
+	<head>
+		<meta charset="UTF-8">
+		<title>Project</title>
+	</head>
 
-<body>
+	<body>
 
-	<input id="get 1" type="button" value="get first">
-	<input id="get 2" type="button" value="get second">
-	<h2>info 1</h2>
-	<div id="info 1"></div>
-	<h2>info 2</h2>
-	<div id="info 2"></div>
+		<input id="get 1" type="button" value="get first" />
+		<input id="get 2" type="button" value="get second" />
+		<h2>info 1</h2>
+		<div id="info 1"></div>
+		<h2>info 2</h2>
+		<div id="info 2"></div>
 
-	<script src="app.js"></script>
-</body>
+		<script type="text/javascript">
+
+// on development
+// let todaysHost = 'ip:port/';
+// const proxyurl = "https://cors-anywhere.herokuapp.com/";
+// stackoverflow.com/questions/43871637/no-access-control-allow-origin-header-is-present-on-the-requested-resource-whe
+
+// on deploy
+// fetch('q1')
+// on development
+//fetch(`${proxyurl}${todaysHost}q1`)
+// on deploy
+// fetch('q2')
+// on development
+//fetch(`${proxyurl}${todaysHost}q2`)
+
+document.getElementById("get 1").onclick = function() {
+	fetch('q1')
+		.then(response => response.json())
+		.then(data => document.getElementById("info 1").innerHTML += data.detectorid + ' ' + data.starttime + ' ' + data.dqflags);}
+document.getElementById("get 2").onclick = function() {
+	fetch('q2')
+		.then(response => response.json())
+		.then(data => document.getElementById("info 2").innerHTML += data.detectorid + ' ' + data.starttime + ' ' + data.dqflags);}
+
+		</script>
+	</body>
 
 </html>
