@@ -8,6 +8,7 @@ var path = require("path");
 var cors = require("cors");
 app.use(cors());
 
+
 app.get('/q1', function (req, res) {
   const client = new cassandra.Client({
     contactPoints: config.cassandra.hosts,
@@ -16,13 +17,26 @@ app.get('/q1', function (req, res) {
       username: config.cassandra.username,
       password: config.cassandra.password,
     },
-    keyspace: "part 3",
+    keyspace: "part_2_testing_13",
   });
 
-  const query = "SELECT * FROM loopdata_by_startime where detectorid = 1345";
-  client.execute(query).then((result) => res.send(result.rows[1]));
+  let data = {
+	  'error': 1,
+	  'results': ''
+  };
+  const query = "SELECT * FROM loopdata_by_detector where detectorid in (1345, 1346, 1346, 1348)";
+  
+  client.execute(query, function(err, rows) {
+	if(rows.length != 0) {
+		data[err] = 0;
+		data['results'] = rows;
+		res.json(data);
+  	} else {
+		data[results] = 'no results';
+		res.json(data);
+	}
+  });
 });
-
 app.get('/q2', function (req, res) {
   const client = new cassandra.Client({
     contactPoints: config.cassandra.hosts,
@@ -31,11 +45,25 @@ app.get('/q2', function (req, res) {
       username: config.cassandra.username,
       password: config.cassandra.password,
     },
-    keyspace: "part 3",
+    keyspace: "part_2_testing_13",
   });
 
-  const query = "SELECT * FROM loopdata_by_startime where detectorid = 1346";
-  client.execute(query).then((result) => res.send(result.rows[1]));
+  let data = {
+	  'error': 1,
+	  'results': ''
+  };
+  const query = "SELECT * FROM loopdata_by_detector where detectorid = 1345";
+  
+  client.execute(query, function(err, rows) {
+	if(rows.length != 0) {
+		data[err] = 0;
+		data['results'] = rows;
+		res.json(data);
+  	} else {
+		data[results] = 'no results';
+		res.json(data);
+	}
+  });
 });
 
 app.get('/q3', function (req, res) {

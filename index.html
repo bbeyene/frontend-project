@@ -30,15 +30,32 @@
 // or if cors used ...
 // fetch(`${todaysHost}/q1`)
 
-document.getElementById("get 1").onclick = function() {
-	fetch('q1')
 //fetch(`${todaysHost}/q1`)
-		.then(response => response.json())
-		.then(data => document.getElementById("info 1").innerHTML += data.detectorid + ' ' + data.starttime + ' ' + data.dqflags);}
+
+document.getElementById("get 1").onclick = function() {
+						fetch('q1')
+							.then(response => { return response.json();
+							})
+							.then(data => {
+								console.log('requested:', data.results.rows);
+								document.getElementById("info 1").innerHTML = JSON.stringify(data.results.rows);
+							})
+							.catch(error => {
+								console.log('failed', error)
+							});
+						}
 document.getElementById("get 2").onclick = function() {
-	fetch('q2')
-		.then(response => response.json())
-		.then(data => document.getElementById("info 2").innerHTML += data.detectorid + ' ' + data.starttime + ' ' + data.dqflags);}
+						fetch('q2')
+							.then(response => { return response.json();
+							})
+							.then(data => {
+								console.log('requested:', data.results.rows);
+								document.getElementById("info 2").innerHTML = JSON.stringify(data.results.rows);
+							})
+							.catch(error => {
+								console.log('failed', error)
+							});
+						}
 
 		</script>
 	</body>
