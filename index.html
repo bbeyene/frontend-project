@@ -1,63 +1,115 @@
 <!DOCTYPE html>
 <html lang="en">
 
-	<head>
-		<meta charset="UTF-8">
-		<title>Project</title>
-	</head>
+<head>
+	<meta charset="UTF-8">
+	<title>Project</title>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.bundle.js"></script>
+</head>
 
-	<body>
+<body>
 
-		<input id="get 1" type="button" value="get first" />
-		<input id="get 2" type="button" value="get second" />
-		<h2>info 1</h2>
-		<div id="info 1"></div>
-		<h2>info 2</h2>
-		<div id="info 2"></div>
+	<input id="get 1" type="button" value="get first" />
+	<input id="get 2" type="button" value="get second" />
+	<h2>info 1</h2>
+	<div id="info 1"></div>
+	<div class="container">
+		<canvas id="chart"></canvas>
+	</div>
+	<h2>info 2</h2>
+	<div id="info 2"></div>
 
-		<script type="text/javascript">
+	<script type="text/javascript">
 
-// on development
-// let todaysHost = 'ip:port';
-// let todaysHost = '';
-//const proxyurl = "https://cors-anywhere.herokuapp.com/";
-// stackoverflow.com/questions/43871637/no-access-control-allow-origin-header-is-present-on-the-requested-resource-whe
+		// on development
+		let todaysHost = 'http://34.105.76.204';
+		// stackoverflow.com/questions/43871637/no-access-control-allow-origin-header-is-present-on-the-requested-resource-whe
 
-// on deploy
-// fetch('q1')
-// on development
-// fetch(`${proxyurl}/${todaysHost}/q1`)
-// or if cors used ...
-// fetch(`${todaysHost}/q1`)
+		// on deploy
+		// fetch('q1')
+		// on development
+		// fetch(`${proxyurl}/${todaysHost}/q1`)
+		// or if cors used ...
+		// fetch(`${todaysHost}/q1`)
 
-//fetch(`${todaysHost}/q1`)
+		document.getElementById("get 1").onclick = function () {
+			fetch(`${todaysHost}/q1`)
+				//						fetch('q1')
+				.then(response => {
+					return response.json();
+				})
+				.then(data => {
+					console.log('requested:', data.results.rows);
+					returnedRows = data.results.rows;
 
-document.getElementById("get 1").onclick = function() {
-						fetch('q1')
-							.then(response => { return response.json();
-							})
-							.then(data => {
-								console.log('requested:', data.results.rows);
-								document.getElementById("info 1").innerHTML = JSON.stringify(data.results.rows);
-							})
-							.catch(error => {
-								console.log('failed', error)
-							});
+					starttime = [];
+					detectors = [];
+					speeds = [];
+
+					starttime = returnedRows.map(x => x['starttime']);
+					detectors[0] = returnedRows.filter(x => x['detectorid'] == 1345);
+					detectors[1] = returnedRows.filter(x => x['detectorid'] == 1346);
+					detectors[2] = returnedRows.filter(x => x['detectorid'] == 1347);
+					detectors[3] = returnedRows.filter(x => x['detectorid'] == 1348);
+
+					speeds[0] = detectors[0].map(x => x['speed']);
+					speeds[1] = detectors[1].map(x => x['speed']);
+					speeds[2] = detectors[2].map(x => x['speed']);
+					speeds[3] = detectors[3].map(x => x['speed']);
+					var ctx = document.getElementById("chart").getContext("2d");
+
+					var chart = new Chart(ctx, {
+						type: 'line',
+						data: {
+							labels: starttime,
+							datasets: [{
+								label: '1345',
+								data: speeds[0],
+								borderColor: 'rgba(0, 0, 255, 0.8)',
+								backgroundColor: 'rgba(0, 0, 255, 0.3)',
+								spanGaps: true,
+								fill: false
+							},
+							{
+								label: '1346',
+								data: speeds[1],
+								borderColor: 'rgba(0, 255, 0, 0.8)',
+								backgroundColor: 'rgba(0, 255, 0, 0.3)',
+								spanGaps: true,
+								fill: false
+							}
+							]
+						},
+						options: {
+							scales: {
+								xAxes: [{
+									type: 'time'
+								}]
+							}
 						}
-document.getElementById("get 2").onclick = function() {
-						fetch('q2')
-							.then(response => { return response.json();
-							})
-							.then(data => {
-								console.log('requested:', data.results.rows);
-								document.getElementById("info 2").innerHTML = JSON.stringify(data.results.rows);
-							})
-							.catch(error => {
-								console.log('failed', error)
-							});
-						}
+					});
 
-		</script>
-	</body>
+
+				})
+				.catch(error => {
+					console.log('failed', error)
+				});
+		}
+		document.getElementById("get 2").onclick = function () {
+			fetch('q2')
+				.then(response => {
+					return response.json();
+				})
+				.then(data => {
+					console.log('requested:', data.results.rows);
+					document.getElementById("info 2").innerHTML = JSON.stringify(data.results.rows);
+				})
+				.catch(error => {
+					console.log('failed', error)
+				});
+		}
+
+	</script>
+</body>
 
 </html>
