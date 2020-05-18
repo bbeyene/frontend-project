@@ -15,7 +15,10 @@
 	<h2>info 1</h2>
 	<div id="info 1"></div>
 	<div class="container">
-		<canvas id="chart"></canvas>
+		<canvas id="chartSpeed"></canvas>
+	</div>
+	<div class="container">
+		<canvas id="chartVolume"></canvas>
 	</div>
 	<h2>info 2</h2>
 	<div id="info 2"></div>
@@ -23,7 +26,7 @@
 	<script type="text/javascript">
 
 		// on development
-		let todaysHost = 'http://34.105.76.204';
+		let todaysHost = 'http://34.105.22.120';
 		// stackoverflow.com/questions/43871637/no-access-control-allow-origin-header-is-present-on-the-requested-resource-whe
 
 		// on deploy
@@ -34,7 +37,7 @@
 		// fetch(`${todaysHost}/q1`)
 
 		var ctx;
-		var chart;
+		var chartSpeed;
 		document.getElementById("get 1").onclick = function () {
 			fetch(`${todaysHost}/1345`) //fetch('1345')
 				.then(response => { return response.json(); })
@@ -42,23 +45,23 @@
 					returnedRows = data.results.rows;
 					starttime = [];
 					speed = [];
-					starttime = returnedRows.map(x => moment(x['starttime']).format());
-					//starttime = returnedRows.map(x => moment.utc((x['starttime'])).format());
-					console.log(starttime);
+					volume = [];
+					starttime = returnedRows.map(x => moment.utc((x['starttime'])).format('h:mm a'));
 					speed = returnedRows.map(x => x['speed']);
-					ctx = document.getElementById("chart").getContext("2d");
-					chart = new Chart(ctx, {
+
+					ctx = document.getElementById("chartSpeed").getContext("2d");
+					chartSpeed = new Chart(ctx, {
 						type: 'line',
 						data: {
 							labels: starttime,
 							datasets: [{
-								label: '1345',
+								label: 'lane 1',
 								data: speed,
 								borderColor: 'rgba(0, 0, 255, 0.8)',
 								backgroundColor: 'rgba(0, 0, 255, 0.3)',
-								//borderWidth: 1,
 								fill: false,
-								showLine: false
+								showLine: false,
+								pointRadius: 1
 							}]
 						},
 						options: {
@@ -69,15 +72,10 @@
 								animationDuration: 0 
 							},
 							responsiveAnimationDuration: 0,
-							scales: {
-								xAxes: [{
-									type: 'time'
-								}]
-							}
 						},
 						defaults: {
 							line: {
-								showLine: false
+								showLine: false,
 							}
 						}
 					});
@@ -90,17 +88,37 @@
 					speed = returnedRows.map(x => x['speed']);
 
 					another = {
-						label: '1346',
+						label: 'lane 2',
 						data: speed,
 						borderColor: 'rgba(0, 255, 0, 0.8)',
 						backgroundColor: 'rgba(0, 255, 0, 0.3)',
-						//borderWidth: 1,
 						fill: false,
-						showLine: false
+						showLine: false,
+						pointRadius: 1
 					}
 
-					chart.data.datasets.push(another);
-					chart.update(0);
+					chartSpeed.data.datasets.push(another);
+					chartSpeed.update(0);
+					return fetch(`${todaysHost}/1348`); //fetch('1348')
+				})
+				.then(response => { return response.json(); })
+				.then(data => {
+					returnedRows = data.results.rows;
+					speed = [];
+					speed = returnedRows.map(x => x['speed']);
+
+					another = {
+						label: 'lane 3',
+						data: speed,
+						borderColor: 'rgba(255, 0, 0, 0.8)',
+						backgroundColor: 'rgba(255, 0, 0, 0.3)',
+						fill: false,
+						showLine: false,
+						pointRadius: 1
+					}
+
+					chartSpeed.data.datasets.push(another);
+					chartSpeed.update(0);
 				})
 				.catch(error => {
 					console.log('failed', error)
