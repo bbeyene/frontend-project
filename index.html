@@ -32,53 +32,31 @@
 		// or if cors used ...
 		// fetch(`${todaysHost}/q1`)
 
+		var ctx;
+		var chart;
 		document.getElementById("get 1").onclick = function () {
-			fetch(`${todaysHost}/q1`)
-				//						fetch('q1')
-				.then(response => {
-					return response.json();
-				})
+			fetch(`${todaysHost}/1345`) //fetch('1345')
+				.then(response => { return response.json(); })
 				.then(data => {
-					console.log('requested:', data.results.rows);
 					returnedRows = data.results.rows;
-
 					starttime = [];
-					detectors = [];
-					speeds = [];
-
+					speed = [];
 					starttime = returnedRows.map(x => x['starttime']);
-					detectors[0] = returnedRows.filter(x => x['detectorid'] == 1345);
-					detectors[1] = returnedRows.filter(x => x['detectorid'] == 1346);
-					detectors[2] = returnedRows.filter(x => x['detectorid'] == 1347);
-					detectors[3] = returnedRows.filter(x => x['detectorid'] == 1348);
-
-					speeds[0] = detectors[0].map(x => x['speed']);
-					speeds[1] = detectors[1].map(x => x['speed']);
-					speeds[2] = detectors[2].map(x => x['speed']);
-					speeds[3] = detectors[3].map(x => x['speed']);
-					var ctx = document.getElementById("chart").getContext("2d");
-
-					var chart = new Chart(ctx, {
+					speed = returnedRows.map(x => x['speed']);
+					ctx = document.getElementById("chart").getContext("2d");
+					chart = new Chart(ctx, {
 						type: 'line',
 						data: {
 							labels: starttime,
 							datasets: [{
 								label: '1345',
-								data: speeds[0],
+								data: speed,
 								borderColor: 'rgba(0, 0, 255, 0.8)',
 								backgroundColor: 'rgba(0, 0, 255, 0.3)',
+								borderWidth: 1,
 								spanGaps: true,
-								fill: false
-							},
-							{
-								label: '1346',
-								data: speeds[1],
-								borderColor: 'rgba(0, 255, 0, 0.8)',
-								backgroundColor: 'rgba(0, 255, 0, 0.3)',
-								spanGaps: true,
-								fill: false
-							}
-							]
+								fill: false,
+							}]
 						},
 						options: {
 							scales: {
@@ -88,13 +66,32 @@
 							}
 						}
 					});
+					return fetch(`${todaysHost}/1346`); //fetch('1346')
+				})
+				.then(response => { return response.json(); })
+				.then(data => {
+					returnedRows = data.results.rows;
+					speed = [];
+					speed = returnedRows.map(x => x['speed']);
 
+					another = {
+						label: '1346',
+						data: speed,
+						borderColor: 'rgba(0, 255, 0, 0.8)',
+						backgroundColor: 'rgba(0, 255, 0, 0.3)',
+						borderWidth: 1,
+						spanGaps: true,
+						fill: false,
+					}
 
+					chart.data.datasets.push(another);
+					chart.update();
 				})
 				.catch(error => {
 					console.log('failed', error)
-				});
+				})
 		}
+
 		document.getElementById("get 2").onclick = function () {
 			fetch('q2')
 				.then(response => {
