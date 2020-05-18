@@ -5,6 +5,7 @@
 	<meta charset="UTF-8">
 	<title>Project</title>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.bundle.js"></script>
+	<script src="https://rawgit.com/moment/moment/2.2.1/min/moment.min.js"></script>
 </head>
 
 <body>
@@ -41,7 +42,9 @@
 					returnedRows = data.results.rows;
 					starttime = [];
 					speed = [];
-					starttime = returnedRows.map(x => x['starttime']);
+					starttime = returnedRows.map(x => moment(x['starttime']).format());
+					//starttime = returnedRows.map(x => moment.utc((x['starttime'])).format());
+					console.log(starttime);
 					speed = returnedRows.map(x => x['speed']);
 					ctx = document.getElementById("chart").getContext("2d");
 					chart = new Chart(ctx, {
@@ -53,16 +56,28 @@
 								data: speed,
 								borderColor: 'rgba(0, 0, 255, 0.8)',
 								backgroundColor: 'rgba(0, 0, 255, 0.3)',
-								borderWidth: 1,
-								spanGaps: true,
+								//borderWidth: 1,
 								fill: false,
+								showLine: false
 							}]
 						},
 						options: {
+							animation: {
+								duration: 0 
+							},
+							hover: {
+								animationDuration: 0 
+							},
+							responsiveAnimationDuration: 0,
 							scales: {
 								xAxes: [{
 									type: 'time'
 								}]
+							}
+						},
+						defaults: {
+							line: {
+								showLine: false
 							}
 						}
 					});
@@ -79,13 +94,13 @@
 						data: speed,
 						borderColor: 'rgba(0, 255, 0, 0.8)',
 						backgroundColor: 'rgba(0, 255, 0, 0.3)',
-						borderWidth: 1,
-						spanGaps: true,
+						//borderWidth: 1,
 						fill: false,
+						showLine: false
 					}
 
 					chart.data.datasets.push(another);
-					chart.update();
+					chart.update(0);
 				})
 				.catch(error => {
 					console.log('failed', error)
