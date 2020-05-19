@@ -36,21 +36,85 @@
 		// or if cors used ...
 		// fetch(`${todaysHost}/q1`)
 
-		var ctx;
 		var chartSpeed;
+		var chartVolume;
 		document.getElementById("get 1").onclick = function () {
 			fetch(`${todaysHost}/1345`) //fetch('1345')
 				.then(response => { return response.json(); })
 				.then(data => {
 					returnedRows = data.results.rows;
 					starttime = [];
-					speed = [];
-					volume = [];
 					starttime = returnedRows.map(x => moment.utc((x['starttime'])).format('h:mm a'));
+					speed = [];
 					speed = returnedRows.map(x => x['speed']);
+					volume = [];
+					totalVolume = 0;
+					volume = returnedRows.map(x => x['volume']);
+					volume.forEach(v => totalVolume += v);
 
-					ctx = document.getElementById("chartSpeed").getContext("2d");
-					chartSpeed = new Chart(ctx, {
+					chartVolume = new Chart(document.getElementById('chartVolume'), {
+						type: 'doughnut',
+						data: {
+							labels: ['lane 1'],
+							datasets: [
+								{
+									label: 'Volume',
+									backgroundColor: ['rgba(0, 0, 255, 0.8)'],
+									data: [totalVolume]
+								}
+							]
+						},
+						options: {
+							title: {
+								display: true,
+								text: 'Number of Vehicles'
+							}
+						}
+					});
+
+
+					/*
+					speedVolume = [];
+					volumeSpeed = [];
+					vs = [];
+					for(let i = 0; i < speed.length; i++)
+						if((volume[i] != undefined) && (speed[i]) != undefined) 
+							vs.push({'volume': volume[i], 'speed': speed[i]});
+					vs.sort(function(a,b) {
+						return ((a.speed < b.speed) ? -1 : 1)
+					});
+					for(let i = 0; i < vs.length; i++) {
+						speedVolume[i] = vs[i].speed;
+						volumeSpeed[i] = vs[i].volume;
+					}
+					chartSpeedVolume = new Chart(document.getElementById("chartSpeedVolume").getContext("2d"), {
+						type: 'line',
+						data: {
+							labels: speedVolume,
+							datasets: [{
+								label: 'flow rate',
+								data: volumeSpeed,
+								pointRadius: 3
+							}]
+						},
+						options: {
+							animation: {
+								duration: 0
+							},
+							hover: {
+								animationDuration: 0 
+							},
+							responsiveAnimationDuration: 0,
+						},
+						defaults: {
+							line: {
+								showLine: false,
+							}
+						}
+					});
+					*/
+
+					chartSpeed = new Chart(document.getElementById("chartSpeed").getContext("2d"), {
 						type: 'line',
 						data: {
 							labels: starttime,
@@ -66,12 +130,12 @@
 						},
 						options: {
 							animation: {
-								duration: 0 
+								duration: 0
 							},
 							hover: {
 								animationDuration: 0 
 							},
-							responsiveAnimationDuration: 0,
+							responsiveAnimationDuration: 0
 						},
 						defaults: {
 							line: {
@@ -86,8 +150,12 @@
 					returnedRows = data.results.rows;
 					speed = [];
 					speed = returnedRows.map(x => x['speed']);
+					volume = [];
+					totalVolume = 0;
+					volume = returnedRows.map(x => x['volume']);
+					volume.forEach(v => totalVolume += v);
 
-					another = {
+					anotherSpeed = {
 						label: 'lane 2',
 						data: speed,
 						borderColor: 'rgba(0, 255, 0, 0.8)',
@@ -97,8 +165,16 @@
 						pointRadius: 1
 					}
 
-					chartSpeed.data.datasets.push(another);
+					label = 'lane 2';
+					backgroundColor = 'rgba(0, 255, 0, 0.8)';
+
+					chartSpeed.data.datasets.push(anotherSpeed);
 					chartSpeed.update(0);
+
+					chartVolume.data.labels.push(label);
+					chartVolume.data.datasets[0].data.push(totalVolume);
+					chartVolume.data.datasets[0].backgroundColor.push(backgroundColor);
+					chartVolume.update(0);
 					return fetch(`${todaysHost}/1348`); //fetch('1348')
 				})
 				.then(response => { return response.json(); })
@@ -106,8 +182,13 @@
 					returnedRows = data.results.rows;
 					speed = [];
 					speed = returnedRows.map(x => x['speed']);
+					volume = [];
+					totalVolume = 0;
+					volume = returnedRows.map(x => x['volume']);
+					volume.forEach(v => totalVolume += v);
 
-					another = {
+
+					anotherSpeed = {
 						label: 'lane 3',
 						data: speed,
 						borderColor: 'rgba(255, 0, 0, 0.8)',
@@ -116,9 +197,15 @@
 						showLine: false,
 						pointRadius: 1
 					}
+					label = 'lane 3';
+					backgroundColor = 'rgba(255, 0, 0, 0.8)';
 
-					chartSpeed.data.datasets.push(another);
+					chartSpeed.data.datasets.push(anotherSpeed);
 					chartSpeed.update(0);
+					chartVolume.data.labels.push(label);
+					chartVolume.data.datasets[0].data.push(totalVolume);
+					chartVolume.data.datasets[0].backgroundColor.push(backgroundColor);
+					chartVolume.update(0);
 				})
 				.catch(error => {
 					console.log('failed', error)
