@@ -5,6 +5,7 @@
 	<meta charset="UTF-8">
 	<title>Project</title>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.bundle.js"></script>
+	<script src="https://rawgit.com/moment/moment/2.2.1/min/moment.min.js"></script>
 </head>
 
 <body>
@@ -14,7 +15,10 @@
 	<h2>info 1</h2>
 	<div id="info 1"></div>
 	<div class="container">
-		<canvas id="chart"></canvas>
+		<canvas id="chartSpeed"></canvas>
+	</div>
+	<div class="container">
+		<canvas id="chartVolume"></canvas>
 	</div>
 	<h2>info 2</h2>
 	<div id="info 2"></div>
@@ -22,7 +26,7 @@
 	<script type="text/javascript">
 
 		// on development
-		let todaysHost = 'http://34.105.76.204';
+		let todaysHost = 'http://34.105.22.120';
 		// stackoverflow.com/questions/43871637/no-access-control-allow-origin-header-is-present-on-the-requested-resource-whe
 
 		// on deploy
@@ -32,69 +36,182 @@
 		// or if cors used ...
 		// fetch(`${todaysHost}/q1`)
 
+		var chartSpeed;
+		var chartVolume;
 		document.getElementById("get 1").onclick = function () {
-			fetch(`${todaysHost}/q1`)
-				//						fetch('q1')
-				.then(response => {
-					return response.json();
-				})
+			fetch(`${todaysHost}/1345`) //fetch('1345')
+				.then(response => { return response.json(); })
 				.then(data => {
-					console.log('requested:', data.results.rows);
 					returnedRows = data.results.rows;
-
 					starttime = [];
-					detectors = [];
-					speeds = [];
+					starttime = returnedRows.map(x => moment.utc((x['starttime'])).format('h:mm a'));
+					speed = [];
+					speed = returnedRows.map(x => x['speed']);
+					volume = [];
+					totalVolume = 0;
+					volume = returnedRows.map(x => x['volume']);
+					volume.forEach(v => totalVolume += v);
 
-					starttime = returnedRows.map(x => x['starttime']);
-					detectors[0] = returnedRows.filter(x => x['detectorid'] == 1345);
-					detectors[1] = returnedRows.filter(x => x['detectorid'] == 1346);
-					detectors[2] = returnedRows.filter(x => x['detectorid'] == 1347);
-					detectors[3] = returnedRows.filter(x => x['detectorid'] == 1348);
-
-					speeds[0] = detectors[0].map(x => x['speed']);
-					speeds[1] = detectors[1].map(x => x['speed']);
-					speeds[2] = detectors[2].map(x => x['speed']);
-					speeds[3] = detectors[3].map(x => x['speed']);
-					var ctx = document.getElementById("chart").getContext("2d");
-
-					var chart = new Chart(ctx, {
-						type: 'line',
+					chartVolume = new Chart(document.getElementById('chartVolume'), {
+						type: 'doughnut',
 						data: {
-							labels: starttime,
-							datasets: [{
-								label: '1345',
-								data: speeds[0],
-								borderColor: 'rgba(0, 0, 255, 0.8)',
-								backgroundColor: 'rgba(0, 0, 255, 0.3)',
-								spanGaps: true,
-								fill: false
-							},
-							{
-								label: '1346',
-								data: speeds[1],
-								borderColor: 'rgba(0, 255, 0, 0.8)',
-								backgroundColor: 'rgba(0, 255, 0, 0.3)',
-								spanGaps: true,
-								fill: false
-							}
+							labels: ['lane 1'],
+							datasets: [
+								{
+									label: 'Volume',
+									backgroundColor: ['rgba(0, 0, 255, 0.8)'],
+									data: [totalVolume]
+								}
 							]
 						},
 						options: {
-							scales: {
-								xAxes: [{
-									type: 'time'
-								}]
+							title: {
+								display: true,
+								text: 'Number of Vehicles'
 							}
 						}
 					});
 
 
+					/*
+					speedVolume = [];
+					volumeSpeed = [];
+					vs = [];
+					for(let i = 0; i < speed.length; i++)
+						if((volume[i] != undefined) && (speed[i]) != undefined) 
+							vs.push({'volume': volume[i], 'speed': speed[i]});
+					vs.sort(function(a,b) {
+						return ((a.speed < b.speed) ? -1 : 1)
+					});
+					for(let i = 0; i < vs.length; i++) {
+						speedVolume[i] = vs[i].speed;
+						volumeSpeed[i] = vs[i].volume;
+					}
+					chartSpeedVolume = new Chart(document.getElementById("chartSpeedVolume").getContext("2d"), {
+						type: 'line',
+						data: {
+							labels: speedVolume,
+							datasets: [{
+								label: 'flow rate',
+								data: volumeSpeed,
+								pointRadius: 3
+							}]
+						},
+						options: {
+							animation: {
+								duration: 0
+							},
+							hover: {
+								animationDuration: 0 
+							},
+							responsiveAnimationDuration: 0,
+						},
+						defaults: {
+							line: {
+								showLine: false,
+							}
+						}
+					});
+					*/
+
+					chartSpeed = new Chart(document.getElementById("chartSpeed").getContext("2d"), {
+						type: 'line',
+						data: {
+							labels: starttime,
+							datasets: [{
+								label: 'lane 1',
+								data: speed,
+								borderColor: 'rgba(0, 0, 255, 0.8)',
+								backgroundColor: 'rgba(0, 0, 255, 0.3)',
+								fill: false,
+								showLine: false,
+								pointRadius: 1
+							}]
+						},
+						options: {
+							animation: {
+								duration: 0
+							},
+							hover: {
+								animationDuration: 0 
+							},
+							responsiveAnimationDuration: 0
+						},
+						defaults: {
+							line: {
+								showLine: false,
+							}
+						}
+					});
+					return fetch(`${todaysHost}/1346`); //fetch('1346')
+				})
+				.then(response => { return response.json(); })
+				.then(data => {
+					returnedRows = data.results.rows;
+					speed = [];
+					speed = returnedRows.map(x => x['speed']);
+					volume = [];
+					totalVolume = 0;
+					volume = returnedRows.map(x => x['volume']);
+					volume.forEach(v => totalVolume += v);
+
+					anotherSpeed = {
+						label: 'lane 2',
+						data: speed,
+						borderColor: 'rgba(0, 255, 0, 0.8)',
+						backgroundColor: 'rgba(0, 255, 0, 0.3)',
+						fill: false,
+						showLine: false,
+						pointRadius: 1
+					}
+
+					label = 'lane 2';
+					backgroundColor = 'rgba(0, 255, 0, 0.8)';
+
+					chartSpeed.data.datasets.push(anotherSpeed);
+					chartSpeed.update(0);
+
+					chartVolume.data.labels.push(label);
+					chartVolume.data.datasets[0].data.push(totalVolume);
+					chartVolume.data.datasets[0].backgroundColor.push(backgroundColor);
+					chartVolume.update(0);
+					return fetch(`${todaysHost}/1348`); //fetch('1348')
+				})
+				.then(response => { return response.json(); })
+				.then(data => {
+					returnedRows = data.results.rows;
+					speed = [];
+					speed = returnedRows.map(x => x['speed']);
+					volume = [];
+					totalVolume = 0;
+					volume = returnedRows.map(x => x['volume']);
+					volume.forEach(v => totalVolume += v);
+
+
+					anotherSpeed = {
+						label: 'lane 3',
+						data: speed,
+						borderColor: 'rgba(255, 0, 0, 0.8)',
+						backgroundColor: 'rgba(255, 0, 0, 0.3)',
+						fill: false,
+						showLine: false,
+						pointRadius: 1
+					}
+					label = 'lane 3';
+					backgroundColor = 'rgba(255, 0, 0, 0.8)';
+
+					chartSpeed.data.datasets.push(anotherSpeed);
+					chartSpeed.update(0);
+					chartVolume.data.labels.push(label);
+					chartVolume.data.datasets[0].data.push(totalVolume);
+					chartVolume.data.datasets[0].backgroundColor.push(backgroundColor);
+					chartVolume.update(0);
 				})
 				.catch(error => {
 					console.log('failed', error)
-				});
+				})
 		}
+
 		document.getElementById("get 2").onclick = function () {
 			fetch('q2')
 				.then(response => {
