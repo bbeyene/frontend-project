@@ -3,30 +3,138 @@
 
 <head>
 	<meta charset="UTF-8">
-	<title>Project</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<meta http-equiv="X-UA-Compatible" content="ie=edge" />
+	<title>Portland Traffic</title>
+	<link rel="stylesheet" type="text/css" href="style.css">
+	<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.bundle.js"></script>
 	<script src="https://rawgit.com/moment/moment/2.2.1/min/moment.min.js"></script>
 </head>
-
 <body>
+	    <div class="wrapper">
+        <nav id="sidebar">
+            <div class="sidebar-header">
+                <h3>Portland Traffic</h3>
+            </div>
+            <ul class="list-unstyled components">
+                <li class="active">
+                    <a href="#freewaySubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Freeways</a>
+                    <ul class="collapse list-unstyled" id="freewaySubmenu">
+                        <li>
+							<a href="#northSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">I-205 Northbound</a>
+							<ul class="collapse list-unstyled" id="northSubmenu">
+								<li>
+									<a href="#">Johnson Rd</a>
+								</li>
+								<li>
+									<a href="#">Foster Rd</a>
+								</li>
+							</ul>
+						</li>
+                        <li>
+							<a href="#southSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">I-205 Northbound</a>
+							<ul class="collapse list-unstyled" id="southSubmenu">
+								<li>
+									<a href="#">Sunnyside Rd</a>
+								</li>
+								<li>
+									<a href="#">Airport Way</a>
+								</li>
+							</ul>
+						</li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="#anotherSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Pages</a>
+                    <ul class="collapse list-unstyled" id="anotherSubmenu">
+                        <li>
+                            <a href="#">Page 1</a>
+                        </li>
+                        <li>
+                            <a href="#">Page 2</a>
+                        </li>
+                        <li>
+                            <a href="#">Page 3</a>
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="#">Contact</a>
+                </li>
+            </ul>
+        </nav>
 
-	<input id="get 1" type="button" value="get first" />
-	<input id="get 2" type="button" value="get second" />
-	<h2>info 1</h2>
-	<div id="info 1"></div>
-	<div class="container">
-		<canvas id="chartSpeed"></canvas>
-	</div>
-	<div class="container">
-		<canvas id="chartVolume"></canvas>
-	</div>
-	<h2>info 2</h2>
-	<div id="info 2"></div>
+        <div id="content">
+            <nav class="navbar navbar-expand-lg navbar-light bg-light">
+                <div class="container-fluid">
+
+                    <button type="button" id="sidebarCollapse" class="btn btn-info">
+                        <i class="fas fa-align-left"></i>
+                        <span><></span>
+                    </button>
+                    <button class="btn btn-dark d-inline-block d-lg-none ml-auto" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                        <i class="fas fa-align-justify"></i>
+                    </button>
+
+                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                        <ul class="nav navbar-nav ml-auto">
+                            <li class="nav-item active">
+                                <a id="get 1" class="nav-link sunday" href="#">Sunday</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#">Monday</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#">Tuesday</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#">Wednesday</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#">Thursday</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#">Friday</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#">Saturday</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+
+            <h2>Visualize Traffic from Sensor Data</h2>
+            <p>The dark rings on the asphalt on Portland roads and freeways are sensors that measure vehicle presence and speed ...</p>
+            <p>Choose a location from the sidebar to see what the sensors reported from millions of data points ...</p>
+
+            <h2>Data and Storage</h2>
+            <p>The data from these charts comes from ...</p>
+
+			<input id="old get 1" type="button" value="get first" />
+			<input id="get 2" type="button" value="get second" />
+			<h2>info 1</h2>
+			<div class="container">
+				<canvas id="chartSpeed"></canvas>
+			</div>
+			<div class="container">
+				<canvas id="chartVolume"></canvas>
+			</div>
+			<h2>info 2</h2>
+			<div id="info 2"></div>
+			
+
+
+        </div>
+    </div>
+
+
 
 	<script type="text/javascript">
 
 		// on development
-		let todaysHost = 'http://34.105.22.120';
+		let todaysHost = 'http://34.105.77.151'
 		// stackoverflow.com/questions/43871637/no-access-control-allow-origin-header-is-present-on-the-requested-resource-whe
 
 		// on deploy
@@ -133,7 +241,7 @@
 								duration: 0
 							},
 							hover: {
-								animationDuration: 0 
+								animationDuration: 0
 							},
 							responsiveAnimationDuration: 0
 						},
@@ -225,8 +333,30 @@
 					console.log('failed', error)
 				});
 		}
-
 	</script>
-</body>
 
+    <!-- jQuery CDN - Slim version (=without AJAX) -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <!-- Popper.JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js" integrity="sha384-cs/chFZiN24E4KMATLdqdvsezGxaGsi4hLGOzlXwp5UZB1LY//20VyM2taTB4QvJ" crossorigin="anonymous"></script>
+    <!-- Bootstrap JS -->
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js" integrity="sha384-uefMccjFJAIv6A+rW+L4AHf99KvxDjWSu1z9VI8SKNVmz4sk7buKt/6v9KI65qnm" crossorigin="anonymous"></script>
+    <!-- jQuery Custom Scroller CDN -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.concat.min.js"></script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#sidebar").mCustomScrollbar({
+                theme: "minimal"
+            });
+
+            $('#sidebarCollapse').on('click', function () {
+                $('#sidebar, #content').toggleClass('active');
+                $('.collapse.in').toggleClass('in');
+                $('a[aria-expanded=true]').attr('aria-expanded', 'false');
+            });
+        });
+    </script>
+
+</body>
 </html>
