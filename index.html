@@ -80,51 +80,52 @@
                     <div class="collapse navbar-collapse" id="navbarSupportedContent">
                         <ul class="nav navbar-nav ml-auto">
                             <li class="nav-item active">
-                                <a id="get 1" class="nav-link sunday" href="#">Sunday</a>
+                                <a id="sunday" class="nav-link" href="#">Sunday</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="#">Monday</a>
+                                <a id="monday" class="nav-link" href="#">Monday</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="#">Tuesday</a>
+                                <a id="tuesday" class="nav-link" href="#">Tuesday</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="#">Wednesday</a>
+                                <a id="wednesday" class="nav-link" href="#">Wednesday</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="#">Thursday</a>
+                                <a id="thursday" class="nav-link" href="#">Thursday</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="#">Friday</a>
+                                <a id="friday" class="nav-link" href="#">Friday</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="#">Saturday</a>
+                                <a id="saturday" class="nav-link" href="#">Saturday</a>
                             </li>
                         </ul>
                     </div>
                 </div>
             </nav>
 
+			<div id="info">
             <h2>Visualize Traffic from Sensor Data</h2>
             <p>The dark rings on the asphalt on Portland roads and freeways are sensors that measure vehicle presence and speed ...</p>
             <p>Choose a location from the sidebar to see what the sensors reported from millions of data points ...</p>
 
             <h2>Data and Storage</h2>
-            <p>The data from these charts comes from ...</p>
+			<p>The data from these charts comes from ...</p>
+			</div>
 
-			<input id="old get 1" type="button" value="get first" />
-			<input id="get 2" type="button" value="get second" />
-			<h2>info 1</h2>
+			<h2>Speed</h2>
 			<div class="container">
 				<canvas id="chartSpeed"></canvas>
 			</div>
+			<h2>Volume</h2>
 			<div class="container">
 				<canvas id="chartVolume"></canvas>
 			</div>
-			<h2>info 2</h2>
-			<div id="info 2"></div>
-			
-
+			<h2>Travel Time</h2>
+			<div class="container">
+				<canvas id="chartTravelTime"></canvas>
+			</div>
 
         </div>
     </div>
@@ -134,7 +135,7 @@
 	<script type="text/javascript">
 
 		// on development
-		let todaysHost = 'http://34.105.77.151'
+		let todaysHost = 'http://34.105.76.204'
 		// stackoverflow.com/questions/43871637/no-access-control-allow-origin-header-is-present-on-the-requested-resource-whe
 
 		// on deploy
@@ -146,8 +147,11 @@
 
 		var chartSpeed;
 		var chartVolume;
-		document.getElementById("get 1").onclick = function () {
-			fetch(`${todaysHost}/1345`) //fetch('1345')
+		var navlinks = document.querySelectorAll(".nav-link");
+		for(let i = 0; i < navlinks.length; i++) { navlinks[i].onclick = function () { console.log("hi"); } }
+		document.getElementById("sunday").onclick = function () {
+			document.getElementById("info").hidden = true;
+			fetch(`${todaysHost}/detectors/1345/sunday`) //fetch('detectors/1345/sunday')
 				.then(response => { return response.json(); })
 				.then(data => {
 					returnedRows = data.results.rows;
@@ -181,7 +185,7 @@
 					});
 
 
-					/*
+				// speedvolume
 					speedVolume = [];
 					volumeSpeed = [];
 					vs = [];
@@ -195,7 +199,7 @@
 						speedVolume[i] = vs[i].speed;
 						volumeSpeed[i] = vs[i].volume;
 					}
-					chartSpeedVolume = new Chart(document.getElementById("chartSpeedVolume").getContext("2d"), {
+					chartSpeedVolume = new Chart(document.getElementById("chartTravelTime").getContext("2d"), {
 						type: 'line',
 						data: {
 							labels: speedVolume,
@@ -220,7 +224,7 @@
 							}
 						}
 					});
-					*/
+					
 
 					chartSpeed = new Chart(document.getElementById("chartSpeed").getContext("2d"), {
 						type: 'line',
@@ -251,7 +255,7 @@
 							}
 						}
 					});
-					return fetch(`${todaysHost}/1346`); //fetch('1346')
+					return fetch(`${todaysHost}/detectors/1346/sunday`); //fetch('detectors/1346/sunday')
 				})
 				.then(response => { return response.json(); })
 				.then(data => {
@@ -283,7 +287,7 @@
 					chartVolume.data.datasets[0].data.push(totalVolume);
 					chartVolume.data.datasets[0].backgroundColor.push(backgroundColor);
 					chartVolume.update(0);
-					return fetch(`${todaysHost}/1348`); //fetch('1348')
+					return fetch(`${todaysHost}/detectors/1348/sunday`); //fetch('detectors/1348/sunday')
 				})
 				.then(response => { return response.json(); })
 				.then(data => {
@@ -320,19 +324,6 @@
 				})
 		}
 
-		document.getElementById("get 2").onclick = function () {
-			fetch('q2')
-				.then(response => {
-					return response.json();
-				})
-				.then(data => {
-					console.log('requested:', data.results.rows);
-					document.getElementById("info 2").innerHTML = JSON.stringify(data.results.rows);
-				})
-				.catch(error => {
-					console.log('failed', error)
-				});
-		}
 	</script>
 
     <!-- jQuery CDN - Slim version (=without AJAX) -->
