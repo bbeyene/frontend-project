@@ -13,7 +13,7 @@ app.get("/", function (req, res) {
 });
 
 // express routing all detectors
-app.get('/detectors/*', function (req, res) {
+app.get('/data/*', function (req, res) {
   const client = new cassandra.Client({
     contactPoints: config.cassandra.hosts,
     localDataCenter: config.cassandra.datacenter,
@@ -30,8 +30,12 @@ app.get('/detectors/*', function (req, res) {
   };
 
   let splitPath = req.path.split('/');
-  let detectorid = splitPath[2];
-  let day = splitPath[3];
+  let direction = splitPath[2];
+  let highwayname = splitPath[3];
+  let locationtext = splitPath[4].replace('%20', ' ');
+  let lane = splitPath[5];
+  let day = splitPath[6];
+
   if(day === "sunday") { start = "2011-10-02"; end = "2011-10-03"; }
   else if(day === "monday") { start = "2011-10-03"; end = "2011-10-04"; }
   else if(day === "tuesday") { start = "2011-10-04"; end = "2011-10-05"; }
@@ -39,13 +43,20 @@ app.get('/detectors/*', function (req, res) {
   else if(day === "thursday") { start = "2011-10-06"; end = "2011-10-07"; }
   else if(day === "friday") { start = "2011-10-07"; end = "2011-10-08"; }
   else if(day === "saturday") { start = "2011-10-08"; end = "2011-10-09"; }
+  
+  const query1 = "SELECT detectorid FROM detectors_by_highway WHERE direction = ? and highwayname = ? and locationtext = ? and lane = ?";
+  const params1 = [direction, highwayname, locationtext, lane];
+	console.log(params1);
+  let result = client.execute(query1, params1, {prepace: true});
+	console.log(result);
+  let detectorid = result[0].detectorid;
 
   // preparing caches queries
-  const query = "SELECT * FROM loopdata_by_detector where detectorid = ? and starttime >= ? and starttime < ?";
-  const params = [detectorid, start, end];
+  const query2 = "SELECT * FROM loopdata_by_detector where detectorid = ? and starttime >= ? and starttime < ?";
+  const params2 = [detectorid, start, end];
 
   // return rows as is, parse on client
-  client.execute(query, params, {prepare: true}, function(err, rows) {
+  client.execute(query2, params2, {prepare: true}, function(err, rows) {
 	if(rows.length != 0) {
 		data[err] = 0;
 		data['results'] = rows;
