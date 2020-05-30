@@ -27,22 +27,60 @@
 							<a href="#NORTH" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">I-205	Northbound</a>
 							<ul class="collapse list-unstyled" id="NORTH">
 								<li>
-									<a id="Johnson Cr NB" class="locations" href="#">Johnson Rd</a>
+									<a id="Columbia to I-205 NB" class="locations" href="#">Columbia Blvd</a>
+								</li>
+								<li>
+									<a id="Division NB" class="locations" href="#">Division St</a>
 								</li>
 								<li>
 									<a id="Foster NB" class="locations" href="#">Foster Rd</a>
 								</li>
+								<li>
+									<a id="Glisan to I-205 NB" class="locations" href="#">Glisan St</a>
+								</li>
+								<li>
+									<a id="Johnson Cr NB" class="locations" href="#">Johnson Cr Rd</a>
+								</li>
+								<li>
+									<a id="Powell to I-205 NB" class="locations" href="#">Powell Blvd</a>
+								</li>
+								<li>
+									<a id="Sunnyside NB" class="locations" href="#">Sunnyside Rd</a>
+								</li>
 							</ul>
 						</li>
 						<li>
-							<a href="#SOUTH" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">I-205
-								Southbound</a>
+							<a href="#SOUTH" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">I-205 Southbound</a>
 							<ul class="collapse list-unstyled" id="SOUTH">
 								<li>
-									<a href="#">Sunnyside Rd</a>
+									<a id="Airportway EB to SB" class="locations" href="#">Airport Way East</a>
 								</li>
 								<li>
-									<a href="#">Airport Way</a>
+									<a id="Airportway WB to SB" class="locations" href="#">Airport Way West</a>
+								</li>
+								<li>
+									<a id="Columbia to I-205 SB" class="locations" href="#">Columbia Blvd</a>
+								</li>
+								<li>
+									<a id="Division SB" class="locations" href="#">Division St</a>
+								</li>
+								<li>
+									<a id="Foster SB" class="locations" href="#">Foster Rd</a>
+								</li>
+								<li>
+									<a id="Glisan to I-205 SB" class="locations" href="#">Glisan St</a>
+								</li>
+								<li>
+									<a id="Johnson Creek SB" class="locations" href="#">Johnson Cr Rd</a>
+								</li>
+								<li>
+									<a id="Powell Blvd SB" class="locations" href="#">Powell Blvd</a>
+								</li>
+								<li>
+									<a id="Stark/Washington SB" class="locations" href="#">Stark St</a>
+								</li>
+								<li>
+									<a id="Sunnyside SB" class="locations" href="#">Sunnyside Rd</a>
 								</li>
 							</ul>
 						</li>
@@ -75,9 +113,7 @@
 
 					<button type="button" id="sidebarCollapse" class="btn btn-info">
 						<i class="fas fa-align-left"></i>
-						<span>
-							<>
-						</span>
+						<span>Menu</span>
 					</button>
 					<button class="btn btn-dark d-inline-block d-lg-none ml-auto" type="button" data-toggle="collapse"
 						data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
@@ -124,10 +160,14 @@
 				<p>The data from these charts comes from ...</p>
 			</div>
 
+			<h2>Map</h2>
+			<div id="map"></div>
+
 			<h2>Speed</h2>
 			<div class="container">
 				<canvas id="chartSpeed"></canvas>
 			</div>
+
 			<h2>Volume</h2>
 			<div class="container">
 				<canvas id="chartVolume"></canvas>
@@ -143,42 +183,61 @@
 
 
 	<script type="text/javascript">
-		// on development
-		let todaysHost = 'http://34.105.77.151';
-		// stackoverflow.com/questions/43871637/no-access-control-allow-origin-header-is-present-on-the-requested-resource-whe
-
+		let todaysHost = 'http://34.105.76.204'
+		let mapsKey = '';
 		// on deploy
 		// fetch('q1')
 		// on development
 		// fetch(`${proxyurl}/${todaysHost}/q1`)
 		// or if cors used ...
 		// fetch(`${todaysHost}/q1`)
-
+		var map;
 		var chartSpeed;
 		var chartVolume;
-
-
+		var chartTravelTime;
 		var locations = document.querySelectorAll(".locations");
 		var navlinks = document.querySelectorAll(".nav-link");
+
 
 		for (let i = 0; i < locations.length; i++) locations[i].onclick = function () {
 			let location = this.id;
 			let highway = this.parentNode.parentNode.parentNode.parentNode.id;
 			let direction = this.parentNode.parentNode.id;
-			console.log(direction + " " + highway)
 
-			console.log("maps api");
+			//dim chart if already visible
+			getMaps(direction, highway, location);
 
 			for (let i = 0; i < navlinks.length; i++) navlinks[i].onclick = function () {
 				let day = this.id;
-				console.log(location + " " + day + ' data');
-
 				getCharts(direction, highway, location, 1, day);
 			}
 		}
 
+		function getMaps(direction, highway, location) {
+			fetch(`${todaysHost}/map/${direction}/${highway}/${location}`) //on deploy: fetch(`/map/${direction}/${highway}/${location}`)
+				.then(response => { return response.json(); })
+				.then(data => {
+					let width = 400;
+					let height = 300;
+					let pitch = 0;
+					let fov = 120;
+					let heading;
+					if(direction === 'NORTH') heading = 0;
+					else if(direction === 'SOUTH') heading = 180;
+					let lat = data.results.rows[0].latlong[0];
+					let long = data.results.rows[0].latlong[1]
+					let img = document.createElement("img");
+					img.src = `https://maps.googleapis.com/maps/api/streetview?size=${width}x${height}&location=${lat},${long}&heading=${heading}&pitch=${pitch}&fov=${fov}&key=${mapsKey}`
+					document.getElementById("map").appendChild(img);
+				})
+				.catch(error => {
+					console.log('failed', error);
+				})
+		}
+
 		function getCharts(direction, highway, location, lane, day) {
 			document.getElementById("info").hidden = true;
+			console.log(lane);
 			fetch(`${todaysHost}/data/${direction}/${highway}/${location}/${lane}/${day}`) //on deploy: fetch('data/${direction}/${highway}/${location}/${lane}/${day}')
 				.then(response => { return response.json(); })
 				.then(data => {
@@ -192,6 +251,8 @@
 					volume = returnedRows.map(x => x['volume']);
 					volume.forEach(v => totalVolume += v);
 
+					if(chartVolume != null) chartVolume.destroy();
+					document.getElementById('chartVolume').getContext('2d').clearRect(0, 0, this.width, this.height);
 					chartVolume = new Chart(document.getElementById('chartVolume'), {
 						type: 'doughnut',
 						data: {
@@ -211,49 +272,7 @@
 							}
 						}
 					});
-
-
-					// speedvolume
-					speedVolume = [];
-					volumeSpeed = [];
-					vs = [];
-					for (let i = 0; i < speed.length; i++)
-						if ((volume[i] != undefined) && (speed[i]) != undefined)
-							vs.push({ 'volume': volume[i], 'speed': speed[i] });
-					vs.sort(function (a, b) {
-						return ((a.speed < b.speed) ? -1 : 1)
-					});
-					for (let i = 0; i < vs.length; i++) {
-						speedVolume[i] = vs[i].speed;
-						volumeSpeed[i] = vs[i].volume;
-					}
-					chartSpeedVolume = new Chart(document.getElementById("chartTravelTime").getContext("2d"), {
-						type: 'line',
-						data: {
-							labels: speedVolume,
-							datasets: [{
-								label: 'flow rate',
-								data: volumeSpeed,
-								pointRadius: 3
-							}]
-						},
-						options: {
-							animation: {
-								duration: 0
-							},
-							hover: {
-								animationDuration: 0
-							},
-							responsiveAnimationDuration: 0,
-						},
-						defaults: {
-							line: {
-								showLine: false,
-							}
-						}
-					});
-
-
+					if(chartSpeed!= null) chartSpeed.destroy();
 					chartSpeed = new Chart(document.getElementById("chartSpeed").getContext("2d"), {
 						type: 'line',
 						data: {
@@ -283,7 +302,47 @@
 							}
 						}
 					});
-					return fetch(`${todaysHost}/data/${direction}/${highway}/${location}/${lane + 2}/${day}`) //on deploy: fetch('data/${direction}/${highway}/${location}/${lane}/${day}')
+					speedVolume = [];
+					volumeSpeed = [];
+					vs = [];
+					for (let i = 0; i < speed.length; i++)
+						if ((volume[i] != undefined) && (speed[i]) != undefined)
+							vs.push({ 'volume': volume[i], 'speed': speed[i] });
+					vs.sort(function (a, b) {
+						return ((a.speed < b.speed) ? -1 : 1)
+					});
+					for (let i = 0; i < vs.length; i++) {
+						speedVolume[i] = vs[i].speed;
+						volumeSpeed[i] = vs[i].volume;
+					}
+					if(chartTravelTime!= null) chartTravelTime.destroy();
+					document.getElementById('chartTravelTime').getContext('2d').clearRect(0, 0, this.width, this.height);
+					chartTravelTime = new Chart(document.getElementById("chartTravelTime").getContext("2d"), {
+						type: 'line',
+						data: {
+							labels: speedVolume,
+							datasets: [{
+								label: 'flow rate',
+								data: volumeSpeed,
+								pointRadius: 3
+							}]
+						},
+						options: {
+							animation: {
+								duration: 0
+							},
+							hover: {
+								animationDuration: 0
+							},
+							responsiveAnimationDuration: 0,
+						},
+						defaults: {
+							line: {
+								showLine: false,
+							}
+						}
+					});
+					return fetch(`${todaysHost}/data/${direction}/${highway}/${location}/${lane + 1}/${day}`) //on deploy: fetch('data/${direction}/${highway}/${location}/${lane}/${day}')
 				})
 				.then(response => { return response.json(); })
 				.then(data => {
@@ -304,18 +363,16 @@
 						showLine: false,
 						pointRadius: 1
 					}
-
 					label = 'lane 2';
 					backgroundColor = 'rgba(0, 255, 0, 0.8)';
 
 					chartSpeed.data.datasets.push(anotherSpeed);
 					chartSpeed.update(0);
-
 					chartVolume.data.labels.push(label);
 					chartVolume.data.datasets[0].data.push(totalVolume);
 					chartVolume.data.datasets[0].backgroundColor.push(backgroundColor);
 					chartVolume.update(0);
-					return fetch(`${todaysHost}/data/${direction}/${highway}/${location}/${lane + 3}/${day}`) //on deploy: fetch('data/${direction}/${highway}/${location}/${lane+3}/${day}')
+					return fetch(`${todaysHost}/data/${direction}/${highway}/${location}/${lane + 2}/${day}`) //on deploy: fetch('data/${direction}/${highway}/${location}/${lane+3}/${day}')
 				})
 				.then(response => { return response.json(); })
 				.then(data => {
@@ -351,7 +408,6 @@
 					console.log('failed', error)
 				})
 		}
-
 	</script>
 
 	<!-- jQuery CDN - Slim version (=without AJAX) -->
@@ -383,7 +439,5 @@
 			});
 		});
 	</script>
-
 </body>
-
 </html>
