@@ -161,8 +161,8 @@
 		<!-- speed limit api?-->
 		<div class="container">
 			<div class="row row1">
-				<div class="col-sm-6 col-md-4 col-lg-4">
-					<!-- flip street view button? -->
+				<div class="col-sm-12 col-md-4 col-lg-4">
+
 					<div class="container" id="streetView">
 						<img class="card-img-top" id="streetImg" alt="" src="">
 						<div class="card map-card">
@@ -172,51 +172,9 @@
 							</div>
 						</div>
 					</div>
-				</div>
-				<div class="col-sm-12 col-md-8 col-lg-8">
-
-					<div class="container" id="speedChart">
-						<div class="card chart-card">
-							<canvas id="chartSpeed"></canvas>
-							<div class="card-body">
-								<h4 class="card-title" id="speedChartTitle"></h4>
-
-							</div>
-						</div>
-					</div>
 
 				</div>
-			</div>
-			<div class="row row2">
-				<div class="col-sm-6 col-md-4 col-lg-4">
-
-					<div class="container" id="satView">
-						<img class="card-img-top" id="satImg" alt="" src="">
-						<div class="card map-card">
-							<div class="card-body">
-								<h4 class="card-title" id="noTitle"></h4>
-
-							</div>
-						</div>
-					</div>
-
-				</div>
-				<div class="col-sm-12 col-md-8 col-lg-8">
-
-					<div class="container" id="congestionChart">
-						<div class="card chart-card">
-							<canvas id="chartCongestion"></canvas>
-							<div class="card-body">
-								<h4 class="card-title" id="congestionChartTitle"></h4>
-
-							</div>
-						</div>
-					</div>
-
-				</div>
-			</div>
-			<div class="row row3">
-				<div class="col-sm-6 col-md-4 col-lg-4">
+				<div class="col-sm-12 col-md-4 col-lg-4">
 
 					<div class="container" id="volumeChart">
 						<div class="card chart-card">
@@ -229,13 +187,42 @@
 					</div>
 
 				</div>
-				<div class="col-sm-12 col-md-8 col-lg-8">
+				<div class="col-sm-12 col-md-4 col-lg-4">
 
-					<div class="container" id="travelTimeChart">
-						<div class="card chart-card">
-							<canvas id="chartTravelTime"></canvas>
+					<div class="container" id="satView">
+						<img class="card-img-top" id="satImg" alt="" src="">
+						<div class="card map-card">
 							<div class="card-body">
-								<h4 class="card-title" id="travelTimeChartTitle"></h4>
+								<h4 class="card-title" id="noTitle"></h4>
+
+							</div>
+						</div>
+					</div>
+
+
+				</div>
+			</div>
+			<div class="row row2">
+				<div class="col-sm-12 col-md-6 col-lg-6">
+
+					<div class="container" id="speedChart">
+						<div class="card chart-card">
+							<canvas id="chartSpeed"></canvas>
+							<div class="card-body">
+								<h4 class="card-title" id="speedChartTitle"></h4>
+
+							</div>
+						</div>
+					</div>
+
+				</div>
+				<div class="col-sm-12 col-md-6 col-lg-6">
+
+					<div class="container" id="congestionChart">
+						<div class="card chart-card">
+							<canvas id="chartCongestion"></canvas>
+							<div class="card-body">
+								<h4 class="card-title" id="congestionChartTitle"></h4>
 
 							</div>
 						</div>
@@ -259,7 +246,6 @@
 		var map;
 		var chartSpeed;
 		var chartVolume;
-		var chartTravelTime;
 		var chartCongestion;
 		var locations = document.querySelectorAll(".locations");
 		var navlinks = document.querySelectorAll(".nav-link");
@@ -286,7 +272,6 @@
 		function destroyCharts() {
 			if (chartVolume != null) chartVolume.destroy();
 			if (chartSpeed != null) chartSpeed.destroy();
-			if (chartTravelTime != null) chartTravelTime.destroy();
 			if (chartCongestion != null) chartCongestion.destroy();
 		}
 
@@ -376,43 +361,38 @@
 			});
 		}
 
-		function createChartTravelTime(starttime, speed, length) {
-			if (chartTravelTime != null) chartTravelTime.destroy();
-			document.getElementById('chartTravelTime').getContext('2d').clearRect(0, 0, this.width, this.height);
-			chartTravelTime = new Chart(document.getElementById("chartTravelTime").getContext("2d"), {
-				/*
+		function createCongestionChart(starttime, occupancy) {
+			if (chartCongestion != null) chartCongestion.destroy();
+			document.getElementById('chartCongestion').getContext('2d').clearRect(0, 0, this.width, this.height);
+			chartCongestion = new Chart(document.getElementById("chartCongestion").getContext("2d"), {
 				type: 'line',
 				data: {
-					labels: speedVolume,
+					labels: starttime,
 					datasets: [{
-						label: 'flow rate',
-						data: volumeSpeed,
-						pointRadius: 3
+						label: 'left lane',
+						data: occupancy,
+						borderColor: 'rgba(0, 0, 255, 0.8)',
+						backgroundColor: 'rgba(0, 0, 255, 0.3)',
+						fill: false,
+						showLine: true,
+						pointRadius: 1
 					}]
 				},
 				options: {
 					animation: {
-						duration: 0
+						duration: 0.3
 					},
 					hover: {
 						animationDuration: 0
 					},
-					responsiveAnimationDuration: 0,
+					responsiveAnimationDuration: 0
 				},
 				defaults: {
 					line: {
-						showLine: false,
+						showLine: true,
 					}
 				}
-				*/
-			});
-		}
 
-		function createCongestionChart(starttime, occupancy) {
-			console.log(occupancy);
-			if (chartCongestion != null) chartCongestion.destroy();
-			document.getElementById('chartCongestion').getContext('2d').clearRect(0, 0, this.width, this.height);
-			chartCongestion = new Chart(document.getElementById("chartCongestion").getContext("2d"), {
 			});
 		}
 
@@ -431,11 +411,23 @@
 					volume.forEach(v => totalVolume += v);
 					occupancy = [];
 					occupancy = returnedRows.map(x => x['occupancy']);
+					let segment = Math.floor(occupancy.length/48);
+					occupancyAvg = [];
+					for(let i = 0; i < occupancy.length; i+=segment) {
+						let tempBin = 0;
+						for(let j = i; j < i + segment; j++) {
+							tempBin += occupancy[j];
+						}
+						occupancyAvg.push(tempBin /= segment);
+					}
+					timeSlices = [];
+					for(let i = 0; i < starttime.length; i+=segment) {
+						timeSlices.push(starttime[i]);
+					}
 
 					createChartSpeed(starttime, speed);
-					createCongestionChart(starttime, occupancy);
+					createCongestionChart(timeSlices, occupancyAvg);
 					createChartVolume(totalVolume);
-					createChartTravelTime(starttime, speed, length);
 
 					return fetch(`${todaysHost}/data/${direction}/${highway}/${location}/${lane + 1}/${day}`) //on deploy: fetch('data/${direction}/${highway}/${location}/${lane}/${day}')
 				})
@@ -449,6 +441,15 @@
 					volume = returnedRows.map(x => x['volume']);
 					volume.forEach(v => totalVolume += v);
 					occupancy = returnedRows.map(x => x['occupancy']);
+					let segment = Math.floor(occupancy.length/48);
+					occupancyAvg = [];
+					for(let i = 0; i < occupancy.length; i+=segment) {
+						let tempBin = 0;
+						for(let j = i; j < i + segment; j++) {
+							tempBin += occupancy[j];
+						}
+						occupancyAvg.push(tempBin /= segment);
+					}
 
 					anotherSpeed = {
 						label: 'middle lane',
@@ -461,6 +462,15 @@
 					}
 					label = 'middle lane';
 					backgroundColor = 'rgba(0, 255, 0, 0.8)';
+					anotherCongestion = {
+						label: 'middle lane',
+						data: occupancyAvg,
+						borderColor: 'rgba(0, 255, 0, 0.8)',
+						backgroundColor: 'rgba(0, 255, 0, 0.3)',
+						fill: false,
+						showLine: true,
+						pointRadius: 1
+					}
 
 					chartSpeed.data.datasets.push(anotherSpeed);
 					chartSpeed.update(0);
@@ -468,6 +478,8 @@
 					chartVolume.data.datasets[0].data.push(totalVolume);
 					chartVolume.data.datasets[0].backgroundColor.push(backgroundColor);
 					chartVolume.update(0);
+					chartCongestion.data.datasets.push(anotherCongestion);
+					chartCongestion.update(0);
 					return fetch(`${todaysHost}/data/${direction}/${highway}/${location}/${lane + 2}/${day}`) //on deploy: fetch('data/${direction}/${highway}/${location}/${lane+3}/${day}')
 				})
 				.then(response => { return response.json(); })
@@ -480,7 +492,15 @@
 					volume = returnedRows.map(x => x['volume']);
 					volume.forEach(v => totalVolume += v);
 					occupancy = returnedRows.map(x => x['occupancy']);
-
+					let segment = Math.floor(occupancy.length/48);
+					occupancyAvg = [];
+					for(let i = 0; i < occupancy.length; i+=segment) {
+						let tempBin = 0;
+						for(let j = i; j < i + segment; j++) {
+							tempBin += occupancy[j];
+						}
+						occupancyAvg.push(tempBin /= segment);
+					}
 
 					anotherSpeed = {
 						label: 'right lane',
@@ -493,6 +513,15 @@
 					}
 					label = 'right lane';
 					backgroundColor = 'rgba(255, 0, 0, 0.8)';
+					anotherCongestion = {
+						label: 'right lane',
+						data: occupancyAvg,
+						borderColor: 'rgba(255, 0, 0, 0.8)',
+						backgroundColor: 'rgba(255, 0, 0, 0.3)',
+						fill: false,
+						showLine: true,
+						pointRadius: 1
+					}
 
 					chartSpeed.data.datasets.push(anotherSpeed);
 					chartSpeed.update(0);
@@ -500,6 +529,8 @@
 					chartVolume.data.datasets[0].data.push(totalVolume);
 					chartVolume.data.datasets[0].backgroundColor.push(backgroundColor);
 					chartVolume.update(0);
+					chartCongestion.data.datasets.push(anotherCongestion);
+					chartCongestion.update(0);
 				})
 				.catch(error => {
 					console.log('failed', error)
