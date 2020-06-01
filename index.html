@@ -130,25 +130,34 @@
 				<div class="collapse navbar-collapse" id="navbarSupportedContent">
 					<ul class="nav navbar-nav ml-auto">
 						<li class="nav-item">
-							<a id="sunday" class="nav-link" href="#">Sunday</a>
+							<a id="prev" class="nav-link" href="#"><</a>
 						</li>
 						<li class="nav-item">
-							<a id="monday" class="nav-link" href="#">Monday</a>
+							<a id="week" class="nav-link" href="#">Week 1</a>
 						</li>
 						<li class="nav-item">
-							<a id="tuesday" class="nav-link" href="#">Tuesday</a>
+							<a id="next" class="nav-link" href="#">></a>
 						</li>
 						<li class="nav-item">
-							<a id="wednesday" class="nav-link" href="#">Wednesday</a>
+							<a id="sunday" class="nav-link days" href="#">Sunday</a>
 						</li>
 						<li class="nav-item">
-							<a id="thursday" class="nav-link" href="#">Thursday</a>
+							<a id="monday" class="nav-link days" href="#">Monday</a>
 						</li>
 						<li class="nav-item">
-							<a id="friday" class="nav-link" href="#">Friday</a>
+							<a id="tuesday" class="nav-link days" href="#">Tuesday</a>
 						</li>
 						<li class="nav-item">
-							<a id="saturday" class="nav-link" href="#">Saturday</a>
+							<a id="wednesday" class="nav-link days" href="#">Wednesday</a>
+						</li>
+						<li class="nav-item">
+							<a id="thursday" class="nav-link days" href="#">Thursday</a>
+						</li>
+						<li class="nav-item">
+							<a id="friday" class="nav-link days" href="#">Friday</a>
+						</li>
+						<li class="nav-item">
+							<a id="saturday" class="nav-link days" href="#">Saturday</a>
 						</li>
 					</ul>
 				</div>
@@ -184,9 +193,9 @@
 						<img class="card-img-top" id="streetImg" alt="" src="">
 						<div class="card text-center border-light map-card">
 							<div class="card-body">
-								<h6 class="card-title" id="streetViewTitle"></h6>
 								<a id="left" href="#" class="btn btn-primary"><</a>
                     			<a id="right" href="#" class="btn btn-primary">></a>
+								<h6 class="card-title" id="streetViewTitle"></h6>
 								<p id=streetview-desc></p>
 							</div>
 						</div>
@@ -230,7 +239,7 @@
 			document.getElementById("speedChart").hidden = true;
 		};
 
-		let todaysHost = 'http://34.105.22.120';
+		let todaysHost = 'http://34.105.77.151';
 		let mapsKey = '';
 		// on deploy
 		// fetch('q1')
@@ -238,12 +247,11 @@
 		// fetch(`${proxyurl}/${todaysHost}/q1`)
 		// or if cors used ...
 		// fetch(`${todaysHost}/q1`)
-		var map;
 		var chartSpeed;
 		var chartVolume;
 		var chartCongestion;
 		var locations = document.querySelectorAll(".locations");
-		var navlinks = document.querySelectorAll(".nav-link");
+		var days = document.querySelectorAll(".days");
 
 		for (let i = 0; i < locations.length; i++) locations[i].onclick = function () {
 			let location = this.id;
@@ -257,12 +265,13 @@
 			getMaps(direction, highway, location);
 			destroyCharts();
 
-			for (let i = 0; i < navlinks.length; i++) navlinks[i].onclick = function () {
-				let actives = document.getElementsByClassName("nav-link active");
+			for (let i = 0; i < days.length; i++) days[i].onclick = function () {
+				let actives = document.getElementsByClassName("days active");
 				for (let j = 0; j < actives.length; j++) actives[j].classList.remove("active");
 				let day = this.id;
+				let week = document.getElementById("week").textContent.charAt(5);
 				document.getElementById(day).classList.add("active");
-				getCharts(direction, highway, location, 1, day);
+				getCharts(direction, highway, location, 1, day, week);
 			}
 		}
 
@@ -272,6 +281,20 @@
 			if (chartCongestion != null) chartCongestion.destroy();
 		}
 
+		document.getElementById("prev").addEventListener("click", function () {
+			let current = parseInt(document.getElementById("week").textContent.charAt(5))
+			if(current == 0)
+				document.getElementById("week").innerText = "Week 8";
+			else 
+				document.getElementById("week").innerText = "Week " + --current;
+		})
+		document.getElementById("next").addEventListener("click", function () {
+			let current = parseInt(document.getElementById("week").textContent.charAt(5));
+			if(current == 8)
+				document.getElementById("week").innerText = "Week 1";
+			else 
+				document.getElementById("week").innerText = "Week " + ++current;
+		})
 		document.getElementById("left").addEventListener("click", function () {
 			let streetImg = document.getElementById("streetImg");
 			let re = /heading=(.)*&pitch/;
@@ -421,8 +444,8 @@
 			});
 		}
 
-		function getCharts(direction, highway, location, lane, day) {
-			fetch(`${todaysHost}/data/${direction}/${highway}/${location}/${lane}/${day}`) //on deploy: fetch('data/${direction}/${highway}/${location}/${lane}/${day}')
+		function getCharts(direction, highway, location, lane, day, week) {
+			fetch(`${todaysHost}/data/${direction}/${highway}/${location}/${lane}/${day}/${week}`) //on deploy: fetch('data/${direction}/${highway}/${location}/${lane}/${day}/${week}')
 				.then(response => { return response.json(); })
 				.then(data => {
 					returnedRows = data.results.rows;
@@ -454,7 +477,7 @@
 					createCongestionChart(timeSlices, occupancyAvg);
 					createChartVolume(totalVolume);
 
-					return fetch(`${todaysHost}/data/${direction}/${highway}/${location}/${lane + 1}/${day}`) //on deploy: fetch('data/${direction}/${highway}/${location}/${lane}/${day}')
+					return fetch(`${todaysHost}/data/${direction}/${highway}/${location}/${lane + 1}/${day}/${week}`) //on deploy: fetch('data/${direction}/${highway}/${location}/${lane}/${day}/${week}')
 				})
 				.then(response => { return response.json(); })
 				.then(data => {
@@ -505,7 +528,7 @@
 					chartVolume.update(0);
 					chartCongestion.data.datasets.push(anotherCongestion);
 					chartCongestion.update(0);
-					return fetch(`${todaysHost}/data/${direction}/${highway}/${location}/${lane + 2}/${day}`) //on deploy: fetch('data/${direction}/${highway}/${location}/${lane+3}/${day}')
+					return fetch(`${todaysHost}/data/${direction}/${highway}/${location}/${lane + 2}/${day}/${week}`) //on deploy: fetch('data/${direction}/${highway}/${location}/${lane+3}/${day}/${week}')
 				})
 				.then(response => { return response.json(); })
 				.then(data => {
