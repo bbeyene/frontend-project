@@ -17,15 +17,14 @@
 	<div class="wrapper"></div>
 	<nav id="sidebar">
 		<div class="sidebar-header">
-			<h3>Portland Traffic</h3>
+			<h3>Traffic Vizualizer</h3>
 		</div>
 		<ul class="list-unstyled components">
 			<li class="active">
 				<a href="#I-205" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Freeways</a>
 				<ul class="collapse list-unstyled" id="I-205">
 					<li>
-						<a href="#NORTH" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">I-205
-							Northbound</a>
+						<a href="#NORTH" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">I-205 Northbound</a>
 						<ul class="collapse list-unstyled" id="NORTH">
 							<li>
 								<a id="Columbia to I-205 NB" class="locations" href="#">Columbia Blvd</a>
@@ -51,8 +50,7 @@
 						</ul>
 					</li>
 					<li>
-						<a href="#SOUTH" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">I-205
-							Southbound</a>
+						<a href="#SOUTH" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">I-205 Southbound</a>
 						<ul class="collapse list-unstyled" id="SOUTH">
 							<li>
 								<a id="Airportway EB to SB" class="locations" href="#">Airport Way East</a>
@@ -157,77 +155,66 @@
 			</div>
 		</nav>
 
-		<!-- icons everywhere-->
-		<!-- speed limit api?-->
-		<div class="container">
+		<div id="charts-maps" class="container">
 			<div class="row row1">
 				<div class="col-sm-12 col-md-4 col-lg-4">
-
-					<div class="container" id="streetView">
-						<img class="card-img-top" id="streetImg" alt="" src="">
-						<div class="card map-card">
-							<div class="card-body">
-								<h6 class="card-title" id="mapTitle"></h6>
-
-							</div>
-						</div>
-					</div>
-
-				</div>
-				<div class="col-sm-12 col-md-4 col-lg-4">
-
-					<div class="container" id="volumeChart">
-						<div class="card chart-card">
-							<canvas id="chartVolume"></canvas>
-							<div class="card-body">
-								<h4 class="card-title" id="volumeChartTitle"></h4>
-
-							</div>
-						</div>
-					</div>
-
-				</div>
-				<div class="col-sm-12 col-md-4 col-lg-4">
-
 					<div class="container" id="satView">
 						<img class="card-img-top" id="satImg" alt="" src="">
-						<div class="card map-card">
+						<div class="card text-right border-light map-card">
 							<div class="card-body">
-								<h4 class="card-title" id="noTitle"></h4>
-
+								<h6 class="card-title" id="satViewTitle"></h6>
+								<p id=satview-desc></p>
 							</div>
 						</div>
 					</div>
-
-
+				</div>
+				<div class="col-sm-12 col-md-4 col-lg-4">
+					<div class="container" id="volumeChart">
+						<div class="card text-right border-light chart-card">
+							<canvas id="chartVolume"></canvas>
+							<div class="card-body">
+								<h6 class="card-title" id="volumeChartTitle"></h6>
+								<p id=volume-desc></p>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="col-sm-12 col-md-4 col-lg-4">
+					<div class="container" id="streetView">
+						<img class="card-img-top" id="streetImg" alt="" src="">
+						<div class="card text-center border-light map-card">
+							<div class="card-body">
+								<h6 class="card-title" id="streetViewTitle"></h6>
+								<a id="left" href="#" class="btn btn-primary"><</a>
+                    			<a id="right" href="#" class="btn btn-primary">></a>
+								<p id=streetview-desc></p>
+							</div>
+						</div>
+					</div>
 				</div>
 			</div>
 			<div class="row row2">
-				<div class="col-sm-12 col-md-6 col-lg-6">
-
+				<div class="col-sm-12 col-md-12 col-lg-12 col-xl-6">
 					<div class="container" id="speedChart">
-						<div class="card chart-card">
+						<div class="card text-right border-light chart-card">
 							<canvas id="chartSpeed"></canvas>
 							<div class="card-body">
-								<h4 class="card-title" id="speedChartTitle"></h4>
-
+								<h6 class="card-title" id="speedChartTitle"></h6>
+								<p id=speed-desc></p>
 							</div>
 						</div>
 					</div>
-
 				</div>
-				<div class="col-sm-12 col-md-6 col-lg-6">
-
+				<div class="col-sm-12 col-md-12 col-lg-12 col-xl-6">
 					<div class="container" id="congestionChart">
-						<div class="card chart-card">
+						<div class="card text-right border-light chart-card">
 							<canvas id="chartCongestion"></canvas>
 							<div class="card-body">
-								<h4 class="card-title" id="congestionChartTitle"></h4>
-
+								<h6 class="card-title" id="congestionChartTitle"></h6>
+								<p id=congestion-desc></p>
 							</div>
 						</div>
 					</div>
-
 				</div>
 			</div>
 		</div>
@@ -235,7 +222,15 @@
 	</div>
 
 	<script type="text/javascript">
-		let todaysHost = 'http://34.105.77.151'
+		window.onload = function() {
+			document.getElementById("satView").hidden = true;
+			document.getElementById("streetView").hidden = true;
+			document.getElementById("volumeChart").hidden = true;
+			document.getElementById("congestionChart").hidden = true;
+			document.getElementById("speedChart").hidden = true;
+		};
+
+		let todaysHost = 'http://34.105.22.120';
 		let mapsKey = '';
 		// on deploy
 		// fetch('q1')
@@ -257,6 +252,8 @@
 
 			//a 'to use this api...'
 			//icons on highways/locations
+			document.getElementById("satView").hidden = false;
+			document.getElementById("streetView").hidden = false;
 			getMaps(direction, highway, location);
 			destroyCharts();
 
@@ -275,6 +272,27 @@
 			if (chartCongestion != null) chartCongestion.destroy();
 		}
 
+		document.getElementById("left").addEventListener("click", function () {
+			let streetImg = document.getElementById("streetImg");
+			let re = /heading=(.)*&pitch/;
+			let str = streetImg.src.match(re);
+			let oldHeading = str[0].match(/\d+/);
+			let newHeading = parseInt(oldHeading[0]) - 30;
+			let newCall = streetImg.src.replace(re, "heading=" + newHeading + "&pitch");
+			streetImg.src = newCall;
+			console.log(newCall);
+		});
+		document.getElementById("right").addEventListener("click", function () {
+			let streetImg = document.getElementById("streetImg");
+			let re = /heading=(.)*&pitch/;
+			let str = streetImg.src.match(re);
+			let oldHeading = str[0].match(/\d+/);
+			let newHeading = parseInt(oldHeading[0]) + 30;
+			let newCall = streetImg.src.replace(re, "heading=" + newHeading + "&pitch");
+			streetImg.src = newCall;
+			console.log(newCall);
+		});
+
 		function getMaps(direction, highway, location) {
 			fetch(`${todaysHost}/map/${direction}/${highway}/${location}`) //on deploy: fetch(`/map/${direction}/${highway}/${location}`)
 				.then(response => { return response.json(); })
@@ -284,20 +302,21 @@
 					let pitch = 0;
 					let fov = 120;
 					let heading;
-					if (direction === 'NORTH') heading = 0;
+					if (direction === 'NORTH') heading = 360;
 					else if (direction === 'SOUTH') heading = 180;
 					let lat = data.results.rows[0].latlong[0];
 					let long = data.results.rows[0].latlong[1]
 
 					let streetImg = document.getElementById("streetImg");
 					streetImg.src = `https://maps.googleapis.com/maps/api/streetview?size=${width}x${height}&location=${lat},${long}&heading=${heading}&pitch=${pitch}&fov=${fov}&key=${mapsKey}`
-					document.getElementById("mapTitle").innerText = location + " on " + highway;
 					document.getElementById("streetImg").setAttribute("alt", location + ' street view from google maps');
 
 					let zoom = 20;
 					let satImg = document.getElementById("satImg");
 					satImg.src = `https://maps.googleapis.com/maps/api/staticmap?center=${lat},${long}&zoom=${zoom}&size=${width}x${height}&maptype=hybrid&key=${mapsKey}`;
+					document.getElementById("satViewTitle").innerText = location + " on " + highway;
 					document.getElementById("satImg").setAttribute("alt", location + ' satellite view from google maps');
+					return true;
 				})
 				.catch(error => {
 					console.log('failed', error);
@@ -305,12 +324,14 @@
 		}
 
 		function createChartVolume(totalVolume) {
+			document.getElementById("volumeChart").hidden = false;
+			document.getElementById("volumeChartTitle").innerText = "Number of vehicles per day";
 			if (chartVolume != null) chartVolume.destroy();
 			document.getElementById('chartVolume').getContext('2d').clearRect(0, 0, this.width, this.height);
 			chartVolume = new Chart(document.getElementById('chartVolume'), {
 				type: 'doughnut',
 				data: {
-					labels: ['left lane'],
+					labels: ['left'],
 					datasets: [
 						{
 							label: 'Volume',
@@ -322,20 +343,22 @@
 				options: {
 					title: {
 						display: true,
-						text: 'Number of Vehicles'
 					}
 				}
 			});
 		}
 
 		function createChartSpeed(starttime, speed) {
+			document.getElementById("speedChart").hidden = false;
+			document.getElementById("speedChartTitle").innerText = "Speed";
+			document.getElementById("speed-desc").innerText = "20-second averages in mph";
 			if (chartSpeed != null) chartSpeed.destroy();
 			chartSpeed = new Chart(document.getElementById("chartSpeed").getContext("2d"), {
 				type: 'line',
 				data: {
 					labels: starttime,
 					datasets: [{
-						label: 'left lane',
+						label: 'left',
 						data: speed,
 						borderColor: 'rgba(0, 0, 255, 0.8)',
 						backgroundColor: 'rgba(0, 0, 255, 0.3)',
@@ -362,6 +385,9 @@
 		}
 
 		function createCongestionChart(starttime, occupancy) {
+			document.getElementById("congestionChart").hidden = false;
+			document.getElementById("congestionChartTitle").innerText = "Congestion";
+			document.getElementById("congestion-desc").innerText = "percentage of time cars are on a sensor";
 			if (chartCongestion != null) chartCongestion.destroy();
 			document.getElementById('chartCongestion').getContext('2d').clearRect(0, 0, this.width, this.height);
 			chartCongestion = new Chart(document.getElementById("chartCongestion").getContext("2d"), {
@@ -369,7 +395,7 @@
 				data: {
 					labels: starttime,
 					datasets: [{
-						label: 'left lane',
+						label: 'left',
 						data: occupancy,
 						borderColor: 'rgba(0, 0, 255, 0.8)',
 						backgroundColor: 'rgba(0, 0, 255, 0.3)',
@@ -392,7 +418,6 @@
 						showLine: true,
 					}
 				}
-
 			});
 		}
 
@@ -418,7 +443,7 @@
 						for(let j = i; j < i + segment; j++) {
 							tempBin += occupancy[j];
 						}
-						occupancyAvg.push(tempBin /= segment);
+						occupancyAvg.push(Math.round(tempBin /= segment));
 					}
 					timeSlices = [];
 					for(let i = 0; i < starttime.length; i+=segment) {
@@ -448,11 +473,11 @@
 						for(let j = i; j < i + segment; j++) {
 							tempBin += occupancy[j];
 						}
-						occupancyAvg.push(tempBin /= segment);
+						occupancyAvg.push(Math.round(tempBin /= segment));
 					}
 
 					anotherSpeed = {
-						label: 'middle lane',
+						label: 'middle',
 						data: speed,
 						borderColor: 'rgba(0, 255, 0, 0.8)',
 						backgroundColor: 'rgba(0, 255, 0, 0.3)',
@@ -460,7 +485,7 @@
 						showLine: false,
 						pointRadius: 1
 					}
-					label = 'middle lane';
+					label = 'middle';
 					backgroundColor = 'rgba(0, 255, 0, 0.8)';
 					anotherCongestion = {
 						label: 'middle lane',
@@ -499,11 +524,11 @@
 						for(let j = i; j < i + segment; j++) {
 							tempBin += occupancy[j];
 						}
-						occupancyAvg.push(tempBin /= segment);
+						occupancyAvg.push(Math.round(tempBin /= segment));
 					}
 
 					anotherSpeed = {
-						label: 'right lane',
+						label: 'right',
 						data: speed,
 						borderColor: 'rgba(255, 0, 0, 0.8)',
 						backgroundColor: 'rgba(255, 0, 0, 0.3)',
@@ -511,10 +536,10 @@
 						showLine: false,
 						pointRadius: 1
 					}
-					label = 'right lane';
+					label = 'right';
 					backgroundColor = 'rgba(255, 0, 0, 0.8)';
 					anotherCongestion = {
-						label: 'right lane',
+						label: 'right',
 						data: occupancyAvg,
 						borderColor: 'rgba(255, 0, 0, 0.8)',
 						backgroundColor: 'rgba(255, 0, 0, 0.3)',
