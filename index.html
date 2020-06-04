@@ -21,7 +21,7 @@
 
 	<div class="container-fluid">
 		<div class="row">
-			<nav class="col-sm-4 col-md-3 col-lg-2 d-md-block bg-light sidebar">
+			<nav class="col-sm-12 col-md-3 col-lg-2 d-md-block bg-light sidebar">
 				<div class="sidebar-sticky">
 					<ul class="nav flex-column list-unstyled components">
 						<li class="active">
@@ -33,25 +33,25 @@
 										class="dropdown-toggle">I-205 Northbound</a>
 									<ul class="collapse list-unstyled" id="NORTH">
 										<li>
-											<a id="Columbia to I-205 NB" class="locations" href="#">Columbia Blvd</a>
-										</li>
-										<li>
-											<a id="Division NB" class="locations" href="#">Division St</a>
-										</li>
-										<li>
-											<a id="Foster NB" class="locations" href="#">Foster Rd</a>
-										</li>
-										<li>
-											<a id="Glisan to I-205 NB" class="locations" href="#">Glisan St</a>
+											<a id="Sunnyside NB" class="locations" href="#">Sunnyside Blvd</a>
 										</li>
 										<li>
 											<a id="Johnson Cr NB" class="locations" href="#">Johnson Cr Rd</a>
 										</li>
 										<li>
+											<a id="Foster NB" class="locations" href="#">Foster Rd</a>
+										</li>
+										<li>
 											<a id="Powell to I-205 NB" class="locations" href="#">Powell Blvd</a>
 										</li>
 										<li>
-											<a id="Sunnyside NB" class="locations" href="#">Sunnyside Rd</a>
+											<a id="Division NB" class="locations" href="#">Division St</a>
+										</li>
+										<li>
+											<a id="Glisan to I-205 NB" class="locations" href="#">Glisan St</a>
+										</li>
+										<li>
+											<a id="Columbia to I-205 NB" class="locations" href="#">Columbia Blvd</a>
 										</li>
 									</ul>
 								</li>
@@ -60,34 +60,34 @@
 										class="dropdown-toggle">I-205 Southbound</a>
 									<ul class="collapse list-unstyled" id="SOUTH">
 										<li>
-											<a id="Airportway EB to SB" class="locations" href="#">Airport Way East</a>
-										</li>
-										<li>
-											<a id="Airportway WB to SB" class="locations" href="#">Airport Way West</a>
-										</li>
-										<li>
-											<a id="Columbia to I-205 SB" class="locations" href="#">Columbia Blvd</a>
-										</li>
-										<li>
-											<a id="Division SB" class="locations" href="#">Division St</a>
-										</li>
-										<li>
-											<a id="Foster SB" class="locations" href="#">Foster Rd</a>
-										</li>
-										<li>
-											<a id="Glisan to I-205 SB" class="locations" href="#">Glisan St</a>
+											<a id="Sunnyside SB" class="locations" href="#">Sunnyside Rd</a>
 										</li>
 										<li>
 											<a id="Johnson Creek SB" class="locations" href="#">Johnson Cr Rd</a>
 										</li>
 										<li>
+											<a id="Foster SB" class="locations" href="#">Foster Rd</a>
+										</li>
+										<li>
 											<a id="Powell Blvd SB" class="locations" href="#">Powell Blvd</a>
+										</li>
+										<li>
+											<a id="Division SB" class="locations" href="#">Division St</a>
 										</li>
 										<li>
 											<a id="Stark-Washington SB" class="locations" href="#">Stark St</a>
 										</li>
 										<li>
-											<a id="Sunnyside SB" class="locations" href="#">Sunnyside Rd</a>
+											<a id="Glisan to I-205 SB" class="locations" href="#">Glisan St</a>
+										</li>
+										<li>
+											<a id="Columbia to I-205 SB" class="locations" href="#">Columbia Blvd</a>
+										</li>
+										<li>
+											<a id="Airportway EB to SB" class="locations" href="#">Airport Way East</a>
+										</li>
+										<li>
+											<a id="Airportway WB to SB" class="locations" href="#">Airport Way West</a>
 										</li>
 									</ul>
 								</li>
@@ -146,7 +146,7 @@
 					<div id="charts-maps" class="container">
 						<div class="row row1">
 
-							<div class="col-sm-12 col-md-4 col-lg-4 col-xl-4">
+							<div class="col-sm-12 col-md-12 col-lg-4 col-xl-4">
 								<img class="card-img-top" id="satImg" alt="" src="">
 								<div class="container" id="satView">
 									<div class="card text-right border-light map-card">
@@ -158,7 +158,7 @@
 								</div>
 							</div>
 
-							<div class="col-sm-12 col-md-8 col-lg-8 col-xl-8">
+							<div class="col-sm-12 col-md-12 col-lg-8 col-xl-8">
 								<canvas id="chartSpeed"></canvas>
 								<div class="container" id="speedChart">
 									<div class="card text-right border-light chart-card">
@@ -173,7 +173,7 @@
 						</div>
 						<div class="row row2">
 
-							<div class="col-sm-12 col-md-4 col-lg-4 col-xl-4">
+							<div class="col-sm-12 col-md-12 col-lg-4 col-xl-4">
 								<img class="card-img-top" id="streetImg" alt="" src="">
 								<div class="container" id="streetView">
 									<div class="card text-center border-light map-card">
@@ -206,7 +206,7 @@
 						</div>
 						<div class="row row3">
 
-							<div class="col-sm-12 col-md-4 col-lg-4 col-xl-4"></div>
+							<div class="col-sm-12 col-md-12 col-lg-4 col-xl-4"></div>
 
 							<div class="col-sm-12 col-md-12 col-lg-8 col-xl-8">
 								<canvas id="chartVolume"></canvas>
@@ -223,11 +223,10 @@
 						</div>
 
 					</div>
-				</div>
-
+				</div> <!-- container-fluid -->
 			</main>
-		</div> <!-- row -->
-	</div> <!-- container-fluid -->
+		</div> <!-- row nav and main-->
+	</div> <!-- container-fluid  whole page-->
 
 	<script type="text/javascript">
 		window.onload = function () {
@@ -239,7 +238,7 @@
 		};
 
 		let todaysHost = 'http://34.105.77.151';
-		let mapsKey = '';
+		let mapsKey = 'AIzaSyAELBJSEp2P38z2vJKOJdXnfg-RebeM-zE';
 		// on deploy
 		// fetch('q1')
 		// on development
@@ -252,28 +251,29 @@
 		var locations = document.querySelectorAll(".locations");
 		var days = document.querySelectorAll(".days");
 
-		for (let i = 0; i < locations.length; i++) locations[i].onclick = function (e) {
-			e.preventDefault();
-			let location = this.id;
-			let highway = this.parentNode.parentNode.parentNode.parentNode.id;
-			let direction = this.parentNode.parentNode.id;
-
-			//a 'to use this api...'
-			//icons on highways/locations
-			document.getElementById("satView").hidden = false;
-			document.getElementById("streetView").hidden = false;
-			getMaps(direction, highway, location);
-			destroyCharts();
-
-			for (let i = 0; i < days.length; i++) days[i].onclick = function (e) {
+		for (let i = 0; i < locations.length; i++) 
+			locations[i].onclick = function (e) {
 				e.preventDefault();
-				let actives = document.getElementsByClassName("days active");
-				for (let j = 0; j < actives.length; j++) actives[j].classList.remove("active");
-				let day = this.id;
-				let week = document.getElementById("week").textContent.charAt(5);
-				document.getElementById(day).classList.add("active");
-				getCharts(direction, highway, location, 1, day, week);
-			}
+				let location = this.id;
+				let highway = this.parentNode.parentNode.parentNode.parentNode.id;
+				let direction = this.parentNode.parentNode.id;
+
+				document.getElementById("satView").hidden = false;
+				document.getElementById("streetView").hidden = false;
+				getMaps(direction, highway, location);
+				destroyCharts();
+
+				for (let i = 0; i < days.length; i++) 
+					days[i].onclick = function (e) {
+						e.preventDefault();
+						let actives = document.getElementsByClassName("days active");
+						for (let j = 0; j < actives.length; j++) 
+							actives[j].classList.remove("active");
+						let day = this.id;
+						let week = document.getElementById("week").textContent.charAt(5);
+						document.getElementById(day).classList.add("active");
+						getCharts(direction, highway, location, 1, day, week);
+					}
 		}
 
 		function destroyCharts() {
@@ -290,6 +290,7 @@
 			else
 				document.getElementById("week").innerText = "Week " + --current;
 		})
+		
 		document.getElementById("next").addEventListener("click", function (e) {
 			e.preventDefault();
 			let current = parseInt(document.getElementById("week").textContent.charAt(5));
@@ -298,6 +299,7 @@
 			else
 				document.getElementById("week").innerText = "Week " + ++current;
 		})
+
 		document.getElementById("left").addEventListener("click", function (e) {
 			e.preventDefault();
 			let streetImg = document.getElementById("streetImg");
@@ -308,6 +310,7 @@
 			let newCall = streetImg.src.replace(re, "heading=" + newHeading + "&pitch");
 			streetImg.src = newCall;
 		});
+
 		document.getElementById("right").addEventListener("click", function (e) {
 			e.preventDefault();
 			let streetImg = document.getElementById("streetImg");
@@ -328,8 +331,10 @@
 					let pitch = 0;
 					let fov = 120;
 					let heading;
-					if (direction === 'NORTH') heading = 360;
-					else if (direction === 'SOUTH') heading = 180;
+					if (direction === 'NORTH') 
+						heading = 360;
+					else if (direction === 'SOUTH') 
+						heading = 180;
 					let lat = data.results.rows[0].latlong[0];
 					let long = data.results.rows[0].latlong[1]
 
@@ -352,7 +357,8 @@
 		function createChartVolume(totalVolume) {
 			document.getElementById("volumeChart").hidden = false;
 			document.getElementById("volumeChartTitle").innerText = "Number of vehicles per day";
-			if (chartVolume != null) chartVolume.destroy();
+			if (chartVolume != null) 
+				chartVolume.destroy();
 			document.getElementById('chartVolume').getContext('2d').clearRect(0, 0, this.width, this.height);
 			chartVolume = new Chart(document.getElementById('chartVolume'), {
 				type: 'doughnut',
@@ -378,7 +384,8 @@
 			document.getElementById("speedChart").hidden = false;
 			document.getElementById("speedChartTitle").innerText = "Speed";
 			document.getElementById("speed-desc").innerText = "20-second averages in mph";
-			if (chartSpeed != null) chartSpeed.destroy();
+			if (chartSpeed != null)
+				chartSpeed.destroy();
 			chartSpeed = new Chart(document.getElementById("chartSpeed").getContext("2d"), {
 				type: 'line',
 				data: {
@@ -414,7 +421,8 @@
 			document.getElementById("congestionChart").hidden = false;
 			document.getElementById("congestionChartTitle").innerText = "Congestion";
 			document.getElementById("congestion-desc").innerText = "percentage of time cars are on a sensor";
-			if (chartCongestion != null) chartCongestion.destroy();
+			if (chartCongestion != null) 
+				chartCongestion.destroy();
 			document.getElementById('chartCongestion').getContext('2d').clearRect(0, 0, this.width, this.height);
 			chartCongestion = new Chart(document.getElementById("chartCongestion").getContext("2d"), {
 				type: 'line',
@@ -598,6 +606,11 @@
 	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
 		integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
 		crossorigin="anonymous"></script>
+	<script>
+		$('.navbar-nav>li>a:gt(2)').on('click', function(e){
+			$('.navbar-collapse').collapse('hide');
+		});
 
+	</script>
 </body>
 </html>
