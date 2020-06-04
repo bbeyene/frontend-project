@@ -97,13 +97,13 @@
 				</div>
 			</nav>
 
-			<main role="main" class="col-md-9 ml-sm-auto px-2">
-				<div class="container-fluid pt-5">
+			<main role="main" class="col-md-9 col-lg-10 ml-auto">
+				<div class="container-fluid pt-5" id="large-container">
 					<nav class="navbar navbar-expand-lg">
 						<button class="btn btn-dark d-inline-block d-lg-none ml-auto" type="button"
 							data-toggle="collapse" data-target="#navbarSupportedContent"
 							aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-							</i><i class="far fa-calendar-alt"></i>
+							<i class="far fa-calendar-alt"></i>
 						</button>
 						<div class="collapse navbar-collapse" id="navbarSupportedContent">
 							<ul class="nav navbar-nav ml-auto">
@@ -142,6 +142,18 @@
 							</ul>
 						</div>
 					</nav>
+
+					<div class="mt-4 jumbotron jumbotron-fluid" id="jumbotron">
+						<div class="container">
+							<h1 class="display-4">Visualize Traffic from Sensor Data</h1>
+							<p class="lead">Observe how traffic flows using sensors embeded in Portland freeways where speed and flow are
+								recorded.</p>
+							<hr class="my-4">
+							<p>To use this API...</p>
+							<p class="lead">
+							</p>
+						</div>
+					</div>
 
 					<div id="charts-maps" class="container">
 						<div class="row row1">
@@ -222,7 +234,7 @@
 
 						</div>
 
-					</div>
+					</div> <!-- div charts-maps-->
 				</div> <!-- container-fluid -->
 			</main>
 		</div> <!-- row nav and main-->
@@ -257,6 +269,10 @@
 				let location = this.id;
 				let highway = this.parentNode.parentNode.parentNode.parentNode.id;
 				let direction = this.parentNode.parentNode.id;
+
+				let jumbo = document.getElementById("jumbotron");
+				document.getElementById("jumbotron").remove();
+				document.getElementById("large-container").appendChild(jumbo);
 
 				document.getElementById("satView").hidden = false;
 				document.getElementById("streetView").hidden = false;
@@ -610,7 +626,7 @@
 		$('.navbar-nav>li>a:gt(2)').on('click', function(e){
 			$('.navbar-collapse').collapse('hide');
 		});
-
 	</script>
+
 </body>
 </html>
