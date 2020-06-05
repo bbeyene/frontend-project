@@ -32,7 +32,8 @@ a, a:hover, a:focus {
     transition: all 0.2s;
 }
 ul li a {
-    padding: 7px;
+    padding-top: 30px;
+    padding-left: 7px;
     display: block;
 }
 ul ul li a {

@@ -7,6 +7,7 @@ var app = express();
 var path = require("path"); // to serve index
 var cors = require("cors");
 app.use(cors());
+app.use(express.static('public'));
 
 app.get("/", function (req, res) {
   res.sendFile(path.join(__dirname + "/index.html"));
