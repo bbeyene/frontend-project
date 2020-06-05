@@ -11,7 +11,7 @@
 		href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.bundle.js"></script>
 	<script src="https://rawgit.com/moment/moment/2.2.1/min/moment.min.js"></script>
-	<script  rel="styesheet" src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.0-2/js/all.min.js"></script>
+	<script rel="styesheet" src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.0-2/js/all.min.js"></script>
 </head>
 
 <body>
@@ -109,14 +109,14 @@
 							<ul class="nav navbar-nav ml-auto">
 								<li class="nav-item">
 									<a id="prev" class="nav-link" href="#">
-									<i class="fas fa-caret-left"></i></a>
+										<i class="fas fa-caret-left"></i></a>
 								</li>
 								<li class="nav-item">
 									<a id="week" class="nav-link" href="#">Week 1</a>
 								</li>
 								<li class="nav-item">
-									<a id="next" class="nav-link" href="#"> 
-									<i class="fas fa-caret-right"></i></a>
+									<a id="next" class="nav-link" href="#">
+										<i class="fas fa-caret-right"></i></a>
 								</li>
 								<li class="nav-item">
 									<a id="sunday" class="nav-link days" href="#">Sunday</a>
@@ -144,13 +144,18 @@
 					</nav>
 
 					<div class="mt-4 jumbotron jumbotron-fluid" id="jumbotron">
-						<div class="container">
+						<div class="container" id="jumbo">
 							<h1 class="display-4">Visualize Traffic from Sensor Data</h1>
-							<p class="lead">Observe how traffic flows using sensors embeded in Portland freeways where speed and flow are
+							<p class="lead">Observe how traffic flows using sensors embeded in Portland freeways where
+								speed and flow are
 								recorded.</p>
 							<hr class="my-4">
-							<p>To use this API...</p>
-							<p class="lead">
+							<p>This dataset comes from a Cassandra cluster of three nodes that have two tables: one for
+								sensor meta-data and another for sensor readings.
+							</p>
+							<p>
+								<button class="btn btn-light" id="more">More</button>
+								<button class="btn btn-light" id="useAPI">Use this API</button>
 							</p>
 						</div>
 					</div>
@@ -263,10 +268,11 @@
 		integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
 		crossorigin="anonymous"></script>
 	<script>
-		$('.navbar-nav>li>a:gt(2)').on('click', function(e){
+		$('.navbar-nav>li>a:gt(2)').on('click', function (e) {
 			$('.navbar-collapse').collapse('hide');
 		});
 	</script>
 
 </body>
+
 </html>

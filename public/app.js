@@ -12,6 +12,30 @@ var chartCongestion;
 var locations = document.querySelectorAll(".locations");
 var days = document.querySelectorAll(".days");
 
+document.querySelector('#more').onclick = function (e) {
+    e.preventDefault();
+    fetch('more.html')
+    .then((response) => response.text())
+    .then((html) => {
+        document.getElementById("jumbo").innerHTML = html;
+    })
+    .catch((error) => {
+        console.warn(error);
+    });
+} 
+
+document.querySelector('#useAPI').onclick = function (e) {
+    e.preventDefault();
+    fetch('api.html')
+    .then((response) => response.text())
+    .then((html) => {
+        document.getElementById("jumbo").innerHTML = html;
+    })
+    .catch((error) => {
+        console.warn(error);
+    });
+} 
+
 for (let i = 0; i < locations.length; i++) 
 	locations[i].onclick = function (e) {
 		e.preventDefault();
