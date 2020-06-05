@@ -12,24 +12,19 @@ var chartCongestion;
 var locations = document.querySelectorAll(".locations");
 var days = document.querySelectorAll(".days");
 
-document.querySelector('#more').onclick = function (e) {
-    e.preventDefault();
-    fetch('more.html')
-    .then((response) => response.text())
-    .then((html) => {
-        document.getElementById("jumbo").innerHTML = html;
-    })
-    .catch((error) => {
-        console.warn(error);
-    });
-} 
-
 document.querySelector('#useAPI').onclick = function (e) {
     e.preventDefault();
     fetch('api.html')
     .then((response) => response.text())
     .then((html) => {
-        document.getElementById("jumbo").innerHTML = html;
+	document.querySelector('#useAPI').remove();
+        document.getElementById("one").innerHTML += html;
+
+	let address = window.location.href;
+	let fetch1 = ` fetch ${address}<em>meta</em>`.replace('#', '');
+	let fetch2 = ` or fetch ${address}<em>data/detector/lane/dat/week</em>`.replace('#', '');
+
+        document.getElementById("api-container").innerHTML += fetch1 + fetch2;
     })
     .catch((error) => {
         console.warn(error);
@@ -47,8 +42,8 @@ for (let i = 0; i < locations.length; i++)
 		document.getElementById("jumbotron").remove();
 		document.getElementById("large-container").appendChild(jumbo);
 
-		document.getElementById("satView").hidden = false;
-		document.getElementById("streetView").hidden = false;
+		document.getElementById("satView").style.display = "block";
+		document.getElementById("streetView").style.display= "block";
 		getMaps(direction, highway, loc);
 		destroyCharts();
 
@@ -149,7 +144,7 @@ function getMaps(direction, highway, loc) {
 }
 
 function createChartVolume(totalVolume) {
-	document.getElementById("volumeChart").hidden = false;
+	document.getElementById("volumeChart").style.display = "block";
 	document.getElementById("volumeChartTitle").innerText = "Number of vehicles per day";
 	if (chartVolume != null) 
 		chartVolume.destroy();
@@ -175,7 +170,7 @@ function createChartVolume(totalVolume) {
 }
 
 function createChartSpeed(starttime, speed) {
-	document.getElementById("speedChart").hidden = false;
+	document.getElementById("speedChart").style.display = "block"
 	document.getElementById("speedChartTitle").innerText = "Speed";
 	document.getElementById("speed-desc").innerText = "20-second averages in mph";
 	if (chartSpeed != null)
@@ -212,7 +207,7 @@ function createChartSpeed(starttime, speed) {
 }
 
 function createCongestionChart(starttime, occupancy) {
-	document.getElementById("congestionChart").hidden = false;
+	document.getElementById("congestionChart").style.display = "block";
 	document.getElementById("congestionChartTitle").innerText = "Congestion";
 	document.getElementById("congestion-desc").innerText = "percentage of time cars are on a sensor";
 	if (chartCongestion != null) 

@@ -112,9 +112,40 @@ app.get('/map/*', function (req, res) {
   });
 });
 
+app.get('/meta', function (req, res) {
+  const client = new cassandra.Client({
+    contactPoints: config.cassandra.hosts,
+    localDataCenter: config.cassandra.datacenter,
+    credentials: {
+      username: config.cassandra.username,
+      password: config.cassandra.password,
+    },
+    keyspace: "part_3_version_0",
+  });
+
+  let data = {
+	  'error': 1,
+	  'results': ''
+  };
+
+  const query = "SELECT direction, highwayname, locationtext, detectorid, lane, latlong FROM detectors_by_highway";
+  console.log(query);
+  client.execute(query, function(err, rows) {
+	if(rows.length != 0) {
+		data['error'] = 0;
+		data['results'] = rows;
+		res.json(data);
+  	} else {
+		data[results] = 'no results';
+		res.json(data);
+	}
+  });
+});
+
 app.get('/query', function (req, res) {
   res.sendFile(path.join(__dirname + "/freeway_loopdata_OneHour.json"));
 });
+
 
 app.listen(config.server.port, function () {
   console.log(`Project listening on port ${config.server.port}`);

@@ -33,7 +33,7 @@
 										class="dropdown-toggle">I-205 Northbound</a>
 									<ul class="collapse list-unstyled" id="NORTH">
 										<li>
-											<a id="Sunnyside NB" class="locations" href="#">Sunnyside Blvd</a>
+											<a id="Sunnyside NB" class="locations" href="#">Sunnyside Rd</a>
 										</li>
 										<li>
 											<a id="Johnson Cr NB" class="locations" href="#">Johnson Cr Rd</a>
@@ -151,12 +151,12 @@
 								recorded.</p>
 							<hr class="my-4">
 							<p>This dataset comes from a Cassandra cluster of three nodes that have two tables: one for
-								sensor meta-data and another for sensor readings.
+								sensor meta-data and another for sensor readings, about 9 million rows over two months.
 							</p>
 							<p>
-								<button class="btn btn-light" id="more">More</button>
 								<button class="btn btn-light" id="useAPI">Use this API</button>
 							</p>
+							<div id="one"></div>
 						</div>
 					</div>
 
@@ -164,10 +164,10 @@
 						<div class="row row1">
 
 							<div class="col-sm-12 col-md-12 col-lg-4 col-xl-4">
-								<img class="card-img-top" id="satImg" alt="" src="">
+								<img class="card-img-top border-0" id="satImg" alt="" src="">
 								<div class="container" id="satView">
-									<div class="card text-right border-light map-card">
-										<div class="card-body">
+									<div class="card text-right border-light map-card border-0">
+										<div class="card-body border-0">
 											<h6 class="card-title" id="satViewTitle"></h6>
 											<p id=satview-desc></p>
 										</div>
@@ -178,8 +178,8 @@
 							<div class="col-sm-12 col-md-12 col-lg-8 col-xl-8">
 								<canvas id="chartSpeed"></canvas>
 								<div class="container" id="speedChart">
-									<div class="card text-right border-light chart-card">
-										<div class="card-body">
+									<div class="card text-right border-light chart-card border-0">
+										<div class="card-body border-0">
 											<h6 class="card-title" id="speedChartTitle"></h6>
 											<p id=speed-desc></p>
 										</div>
@@ -193,8 +193,8 @@
 							<div class="col-sm-12 col-md-12 col-lg-4 col-xl-4">
 								<img class="card-img-top" id="streetImg" alt="" src="">
 								<div class="container" id="streetView">
-									<div class="card text-center border-light map-card">
-										<div class="card-body">
+									<div class="card text-center border-light map-card border-0">
+										<div class="card-body border-0">
 											<a id="left" href="#" class="btn btn-primary">
 												<i class="fas fa-arrow-left"></i>
 											</a>
@@ -211,8 +211,8 @@
 							<div class="col-sm-12 col-md-12 col-lg-8 col-xl-8">
 								<canvas id="chartCongestion"></canvas>
 								<div class="container" id="congestionChart">
-									<div class="card text-right border-light chart-card">
-										<div class="card-body">
+									<div class="card text-right border-light chart-card border-0">
+										<div class="card-body border-0">
 											<h6 class="card-title" id="congestionChartTitle"></h6>
 											<p id=congestion-desc></p>
 										</div>
@@ -228,8 +228,8 @@
 							<div class="col-sm-12 col-md-12 col-lg-8 col-xl-8">
 								<canvas id="chartVolume"></canvas>
 								<div class="container" id="volumeChart">
-									<div class="card text-right border-light chart-card">
-										<div class="card-body">
+									<div class="card text-right border-light chart-card border-0">
+										<div class="card-body border-0">
 											<h6 class="card-title" id="volumeChartTitle"></h6>
 											<p id=volume-desc></p>
 										</div>
@@ -247,11 +247,12 @@
 
 	<script type="text/javascript">
 		window.onload = function () {
-			document.getElementById("satView").hidden = true;
-			document.getElementById("streetView").hidden = true;
-			document.getElementById("volumeChart").hidden = true;
-			document.getElementById("congestionChart").hidden = true;
-			document.getElementById("speedChart").hidden = true;
+			document.getElementById("satView").style.display = "none";
+			document.getElementById("streetView").style.display = "none";
+			document.getElementById("volumeChart").style.display = "none";
+			document.getElementById("congestionChart").style.display = "none";
+			document.getElementById("speedChart").style.display = "none";
+
 		};
 	</script>
 
