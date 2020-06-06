@@ -246,6 +246,8 @@
 	</div> <!-- container-fluid  whole page-->
 
 	<script type="text/javascript">
+		// don't display cards and calendar navigation until a location is picked
+		// don't display chart cards a day is picked
 		window.onload = function () {
 			document.getElementById("satView").style.display = "none";
 			document.getElementById("streetView").style.display = "none";
@@ -259,7 +261,6 @@
 
 	<script type="text/javascript" src="app.js"></script>
 
-
 	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
 		integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
 		crossorigin="anonymous"></script>
@@ -270,6 +271,7 @@
 		integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
 		crossorigin="anonymous"></script>
 	<script>
+		// collapse the calendar navbar only when a day is clicked (not an arrow)
 		$('.navbar-nav>li>a:gt(2)').on('click', function (e) {
 			$('.navbar-collapse').collapse('hide');
 		});

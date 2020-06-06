@@ -5,6 +5,12 @@ body {
     font-family: 'san-serif';
 }
 
+/* all styling below this line is for the sidebar and top calendar navigation
+ * make it stick to the top and left, 
+ * give it a smooth gradient so as to blend into the page
+ * make the links dark blue and bold
+ * make the sidebar navigation indent per level
+ * make a box around the link when hover*/
 .sidebar {
     position: fixed;
     top: 0;
@@ -61,10 +67,12 @@ ul li a:hover {
     text-decoration: none;
 }
 
+/* since the caption is dark grey but so is the background color (the jumbotron)A*/
 table caption {
     color: black;
 }
 
+/*links are black when not hovered on for contrast*/
 li a {
     color: black;
 }

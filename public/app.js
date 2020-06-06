@@ -12,6 +12,7 @@ var chartCongestion;
 var locations = document.querySelectorAll(".locations");
 var days = document.querySelectorAll(".days");
 
+// fetches from the public folder a table and description of how to use this api
 document.querySelector('#useAPI').onclick = function (e) {
     e.preventDefault();
     fetch('api.html')
@@ -31,6 +32,8 @@ document.querySelector('#useAPI').onclick = function (e) {
     });
 } 
 
+// when a location is clicked - load a map
+// then, when a week + day of week is clicked - load charts
 for (let i = 0; i < locations.length; i++) 
 	locations[i].onclick = function (e) {
 		e.preventDefault();
@@ -62,6 +65,7 @@ for (let i = 0; i < locations.length; i++)
 		}
 	}
 
+// drawing another chart on the same canvas requires clearing the previous one
 function destroyCharts() {
 	if (chartVolume != null) 
 		chartVolume.destroy();
@@ -71,6 +75,7 @@ function destroyCharts() {
 		chartCongestion.destroy();
 }
 
+// left and right chevron buttons that show week to e queried when day is clicked
 document.getElementById("prev").addEventListener("click", function (e) {
 	e.preventDefault();
 	let current = parseInt(document.getElementById("week").textContent.charAt(5))
@@ -80,6 +85,7 @@ document.getElementById("prev").addEventListener("click", function (e) {
 		document.getElementById("week").innerText = "Week " + --current;
 })
 
+// left and right chevron buttons that show week to e queried when day is clicked
 document.getElementById("next").addEventListener("click", function (e) {
 	e.preventDefault();
 	let current = parseInt(document.getElementById("week").textContent.charAt(5));
@@ -89,6 +95,7 @@ document.getElementById("next").addEventListener("click", function (e) {
 		document.getElementById("week").innerText = "Week " + ++current;
 })
 
+// changes the existing api call to google maps by changing the heading (direction)
 document.getElementById("left").addEventListener("click", function (e) {
 	e.preventDefault();
 	let streetImg = document.getElementById("streetImg");
@@ -100,6 +107,7 @@ document.getElementById("left").addEventListener("click", function (e) {
 	streetImg.src = newCall;
 });
 
+// changes the existing api call to google maps by changing the heading (direction)
 document.getElementById("right").addEventListener("click", function (e) {
 	e.preventDefault();
 	let streetImg = document.getElementById("streetImg");
@@ -111,6 +119,7 @@ document.getElementById("right").addEventListener("click", function (e) {
 	streetImg.src = newCall;
 });
 
+// fetch the map lat/long of the location then call maps api
 function getMaps(direction, highway, loc) {
 	//fetch(`${todaysHost}/map/${direction}/${highway}/${loc}`) 
 	fetch(`map/${direction}/${highway}/${loc}`)
@@ -129,10 +138,12 @@ function getMaps(direction, highway, loc) {
 			let lon = data.results.rows[0].latlong[1];
 			let zoom = 20;
 
+			// update the maps bootstrap cards with street image
 			let streetImg = document.getElementById("streetImg");
 			streetImg.src = `https://maps.googleapis.com/maps/api/streetview?size=${width}x${height}&location=${lat},${lon}&heading=${heading}&pitch=${pitch}&fov=${fov}&key=${mapsKey}`;
 			document.getElementById("streetImg").setAttribute("alt", loc + ' street view from google maps');
 
+			// update the maps bootstrap cards with satellite image
 			let satImg = document.getElementById("satImg");
 			satImg.src = `https://maps.googleapis.com/maps/api/staticmap?center=${lat},${lon}&zoom=${zoom}&size=${width}x${height}&maptype=hybrid&key=${mapsKey}`;
 			document.getElementById("satViewTitle").innerText = loc + " on " + highway;
@@ -144,6 +155,7 @@ function getMaps(direction, highway, loc) {
 		})
 }
 
+// draw a volume per lane chart
 function createChartVolume(totalVolume) {
 	document.getElementById("volumeChart").style.display = "block";
 	document.getElementById("volumeChartTitle").innerText = "Number of vehicles per day";
@@ -170,6 +182,7 @@ function createChartVolume(totalVolume) {
 	});
 }
 
+// draw a speed vs time of day chart
 function createChartSpeed(starttime, speed) {
 	document.getElementById("speedChart").style.display = "block"
 	document.getElementById("speedChartTitle").innerText = "Speed";
@@ -207,6 +220,7 @@ function createChartSpeed(starttime, speed) {
 	});
 }
 
+// draw a percentage of time car spends on a sensor vs time of day average chart
 function createCongestionChart(starttime, occupancy) {
 	document.getElementById("congestionChart").style.display = "block";
 	document.getElementById("congestionChartTitle").innerText = "Congestion";
@@ -245,6 +259,7 @@ function createCongestionChart(starttime, occupancy) {
 	});
 }
 
+// draw all charts per the buttoms from the sidebar navigation and top navigation
 function getCharts(direction, highway, loc, lane, day, week) {
 	//fetch(`${todaysHost}/data/${direction}/${highway}/${loc}/${lane}/${day}/${week}`) 
 	fetch(`data/${direction}/${highway}/${loc}/${lane}/${day}/${week}`)
@@ -259,6 +274,7 @@ function getCharts(direction, highway, loc, lane, day, week) {
 			totalVolume = 0;
 			volume = returnedRows.map(x => x['volume']);
 			volume.forEach(v => totalVolume += v);
+			// create an average occupancy for 20-minute intervals
 			occupancy = [];
 			occupancy = returnedRows.map(x => x['occupancy']);
 			let segment = Math.floor(occupancy.length / 48);
@@ -275,6 +291,7 @@ function getCharts(direction, highway, loc, lane, day, week) {
 				timeSlices.push(starttime[i]);
 			}
 
+			// create charts functions defined aboove
 			createChartSpeed(starttime, speed);
 			createCongestionChart(timeSlices, occupancyAvg);
 			createChartVolume(totalVolume);
@@ -282,6 +299,7 @@ function getCharts(direction, highway, loc, lane, day, week) {
 			//return fetch(`${todaysHost}/data/${direction}/${highway}/${loc}/${lane + 1}/${day}/${week}`)
 			return fetch(`data/${direction}/${highway}/${loc}/${lane + 1}/${day}/${week}`)
 		})
+		//having fetched the first lane's data, fetch the second lane's
 		.then(response => { return response.json(); })
 		.then(data => {
 			returnedRows = data.results.rows;
@@ -322,7 +340,7 @@ function getCharts(direction, highway, loc, lane, day, week) {
 				showLine: true,
 				pointRadius: 1
 			}
-
+			// update the charts with the second lane's data
 			chartSpeed.data.datasets.push(anotherSpeed);
 			chartSpeed.update(0);
 			chartVolume.data.labels.push(label);
@@ -334,6 +352,7 @@ function getCharts(direction, highway, loc, lane, day, week) {
 			//return fetch(`${todaysHost}/data/${direction}/${highway}/${loc}/${lane + 2}/${day}/${week}`)
 			return fetch(`data/${direction}/${highway}/${loc}/${lane + 2}/${day}/${week}`)
 		})
+		//having fetched the second lane's data, fetch the third lane's
 		.then(response => { return response.json(); })
 		.then(data => {
 			returnedRows = data.results.rows;
@@ -374,7 +393,7 @@ function getCharts(direction, highway, loc, lane, day, week) {
 				showLine: true,
 				pointRadius: 1
 			}
-
+			// update the existing chart with the third lane's data
 			chartSpeed.data.datasets.push(anotherSpeed);
 			chartSpeed.update(0);
 			chartVolume.data.labels.push(label);
