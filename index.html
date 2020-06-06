@@ -25,8 +25,8 @@
 				<div class="sidebar-sticky">
 					<ul class="nav flex-column list-unstyled components">
 						<li class="active">
-							<a href="#I-205" data-toggle="collapse" role="navigation" aria-controls="I-205"
-								aria-expanded="false">Freeways</a>
+							<a href="#I-205" aria-label="I-205" data-toggle="collapse" role="button" aria-controls="I-205"
+								 aria-expanded="false"><i class="fas fa-road"></i> Freeways</a>
 							<ul class="collapse list-unstyled" id="I-205">
 								<li>
 									<a href="#NORTH" data-toggle="collapse" aria-expanded="false"
@@ -97,7 +97,7 @@
 				</div>
 			</nav>
 
-			<main role="main" class="col-md-9 col-lg-10 ml-auto">
+			<main class="col-md-9 col-lg-10 ml-auto">
 				<div class="container-fluid pt-5" id="large-container">
 					<nav class="navbar navbar-expand-lg">
 						<button class="btn btn-dark d-inline-block d-lg-none ml-auto" type="button"
@@ -106,44 +106,44 @@
 							<i class="far fa-calendar-alt"></i>
 						</button>
 						<div class="collapse navbar-collapse" id="navbarSupportedContent">
-							<ul class="nav navbar-nav ml-auto">
+							<ul class="nav navbar-nav ml-auto" id="calendar">
 								<li class="nav-item">
-									<a id="prev" class="nav-link" href="#">
+									<a id="prev" class="nav-link" href="#" aria-label="Previous week" role="button">
 										<i class="fas fa-caret-left"></i></a>
 								</li>
 								<li class="nav-item">
-									<a id="week" class="nav-link" href="#">Week 1</a>
+									<span id="week" class="nav-link">Week 1</span>
 								</li>
 								<li class="nav-item">
-									<a id="next" class="nav-link" href="#">
+									<a id="next" class="nav-link" href="#" aria-label="Next week" role="button">
 										<i class="fas fa-caret-right"></i></a>
 								</li>
 								<li class="nav-item">
-									<a id="sunday" class="nav-link days" href="#">Sunday</a>
+									<a id="sunday" class="nav-link days" href="#" aria-label="Sunday" role="button">Sunday</a>
 								</li>
 								<li class="nav-item">
-									<a id="monday" class="nav-link days" href="#">Monday</a>
+									<a id="monday" class="nav-link days" href="#" aria-label="Monday" role="button">Monday</a>
 								</li>
 								<li class="nav-item">
-									<a id="tuesday" class="nav-link days" href="#">Tuesday</a>
+									<a id="tuesday" class="nav-link days" href="#" aria-label="Tuesday" role="button">Tuesday</a>
 								</li>
 								<li class="nav-item">
-									<a id="wednesday" class="nav-link days" href="#">Wednesday</a>
+									<a id="wednesday" class="nav-link days" href="#" aria-label="Wednesday" role="button">Wednesday</a>
 								</li>
 								<li class="nav-item">
-									<a id="thursday" class="nav-link days" href="#">Thursday</a>
+									<a id="thursday" class="nav-link days" href="#" aria-label="Thursday" role="button">Thursday</a>
 								</li>
 								<li class="nav-item">
-									<a id="friday" class="nav-link days" href="#">Friday</a>
+									<a id="friday" class="nav-link days" href="#" aria-label="Friday" role="button">Friday</a>
 								</li>
 								<li class="nav-item">
-									<a id="saturday" class="nav-link days" href="#">Saturday</a>
+									<a id="saturday" class="nav-link days" href="#" aria-label="Saturday" role ="button">Saturday</a>
 								</li>
 							</ul>
 						</div>
 					</nav>
 
-					<div class="mt-4 jumbotron jumbotron-fluid" id="jumbotron">
+					<div class="mt-4 jumbotron jumbotron-fluid bg-light" id="jumbotron">
 						<div class="container" id="jumbo">
 							<h1 class="display-4">Visualize Traffic from Sensor Data</h1>
 							<p class="lead">Observe how traffic flows using sensors embeded in Portland freeways where
@@ -154,7 +154,7 @@
 								sensor meta-data and another for sensor readings, about 9 million rows over two months.
 							</p>
 							<p>
-								<button class="btn btn-light" id="useAPI">Use this API</button>
+								<button class="btn btn-secondary" id="useAPI">Use this API</button>
 							</p>
 							<div id="one"></div>
 						</div>
@@ -195,10 +195,10 @@
 								<div class="container" id="streetView">
 									<div class="card text-center border-light map-card border-0">
 										<div class="card-body border-0">
-											<a id="left" href="#" class="btn btn-primary">
+											<a id="left" href="#" class="btn btn-primary" role="button" aria-label="Turn left">
 												<i class="fas fa-arrow-left"></i>
 											</a>
-											<a id="right" href="#" class="btn btn-primary">
+											<a id="right" href="#" class="btn btn-primary" role="button" aria-label="Turn right">
 												<i class="fas fa-arrow-right"></i>
 											</a>
 											<h6 class="card-title" id="streetViewTitle"></h6>
@@ -252,6 +252,7 @@
 			document.getElementById("volumeChart").style.display = "none";
 			document.getElementById("congestionChart").style.display = "none";
 			document.getElementById("speedChart").style.display = "none";
+			document.getElementById("calendar").hidden = true;
 
 		};
 	</script>

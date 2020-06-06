@@ -22,7 +22,7 @@ document.querySelector('#useAPI').onclick = function (e) {
 
 	let address = window.location.href;
 	let fetch1 = ` fetch ${address}<em>meta</em>`.replace('#', '');
-	let fetch2 = ` or fetch ${address}<em>data/detector/lane/dat/week</em>`.replace('#', '');
+	let fetch2 = ` or fetch ${address}<em>data/detector/lane/date/week</em>`.replace('#', '');
 
         document.getElementById("api-container").innerHTML += fetch1 + fetch2;
     })
@@ -38,6 +38,7 @@ for (let i = 0; i < locations.length; i++)
 		let highway = this.parentNode.parentNode.parentNode.parentNode.id;
 		let direction = this.parentNode.parentNode.id;
 
+		document.getElementById("calendar").hidden = false;
 		let jumbo = document.getElementById("jumbotron");
 		document.getElementById("jumbotron").remove();
 		document.getElementById("large-container").appendChild(jumbo);
@@ -156,7 +157,7 @@ function createChartVolume(totalVolume) {
 			datasets: [
 				{
 					label: 'Volume',
-					backgroundColor: ['rgba(0, 0, 255, 0.8)'],
+					backgroundColor: ['rgb(0, 64, 128)'],
 					data: [totalVolume]
 				}
 			]
@@ -182,8 +183,8 @@ function createChartSpeed(starttime, speed) {
 			datasets: [{
 				label: 'left',
 				data: speed,
-				borderColor: 'rgba(0, 0, 255, 0.8)',
-				backgroundColor: 'rgba(0, 0, 255, 0.3)',
+				borderColor: 'rgb(0, 64, 128)',
+				backgroundColor: 'rgb(0, 64, 128)',
 				fill: false,
 				showLine: false,
 				pointRadius: 1
@@ -220,8 +221,8 @@ function createCongestionChart(starttime, occupancy) {
 			datasets: [{
 				label: 'left',
 				data: occupancy,
-				borderColor: 'rgba(0, 0, 255, 0.8)',
-				backgroundColor: 'rgba(0, 0, 255, 0.3)',
+				borderColor: 'rgb(0, 64, 128)',
+				backgroundColor: 'rgb(0, 64, 128)',
 				fill: false,
 				showLine: true,
 				pointRadius: 1
@@ -304,19 +305,19 @@ function getCharts(direction, highway, loc, lane, day, week) {
 			anotherSpeed = {
 				label: 'middle',
 				data: speed,
-				borderColor: 'rgba(0, 255, 0, 0.8)',
-				backgroundColor: 'rgba(0, 255, 0, 0.3)',
+				borderColor: 'rgb(0, 128, 255)',
+				backgroundColor: 'rgb(0, 128, 255)',
 				fill: false,
 				showLine: false,
 				pointRadius: 1
 			}
 			label = 'middle';
-			backgroundColor = 'rgba(0, 255, 0, 0.8)';
+			backgroundColor = 'rgb(0, 128, 255)';
 			anotherCongestion = {
 				label: 'middle lane',
 				data: occupancyAvg,
-				borderColor: 'rgba(0, 255, 0, 0.8)',
-				backgroundColor: 'rgba(0, 255, 0, 0.3)',
+				borderColor: 'rgb(0, 128, 255)',
+				backgroundColor: 'rgb(0, 128, 255)',
 				fill: false,
 				showLine: true,
 				pointRadius: 1
@@ -356,19 +357,19 @@ function getCharts(direction, highway, loc, lane, day, week) {
 			anotherSpeed = {
 				label: 'right',
 				data: speed,
-				borderColor: 'rgba(255, 0, 0, 0.8)',
-				backgroundColor: 'rgba(255, 0, 0, 0.3)',
+				borderColor: 'rgb(128, 192, 255)',
+				backgroundColor: 'rgb(128, 192, 255)',
 				fill: false,
 				showLine: false,
 				pointRadius: 1
 			}
 			label = 'right';
-			backgroundColor = 'rgba(255, 0, 0, 0.8)';
+			backgroundColor = 'rgb(128, 192, 255)',
 			anotherCongestion = {
 				label: 'right',
 				data: occupancyAvg,
-				borderColor: 'rgba(255, 0, 0, 0.8)',
-				backgroundColor: 'rgba(255, 0, 0, 0.3)',
+				borderColor: 'rgb(128, 192, 255)',
+				backgroundColor: 'rgb(128, 192, 255)',
 				fill: false,
 				showLine: true,
 				pointRadius: 1
